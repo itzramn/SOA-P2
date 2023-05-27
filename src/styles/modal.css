@@ -1,0 +1,28 @@
+.modalTableStyles{
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 100;
+    color: #000;
+}
+
+.modalContentStyles {
+    background: #fff;
+    padding: 15px;
+}
+
+.modalFooterStyles {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.scrollDivTable {
+    max-height: 30rem;
+    overflow: auto;
+}
