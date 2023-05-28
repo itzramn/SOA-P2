@@ -9,9 +9,31 @@ const ASSETS = [
 ];
 
 const EMPLOYEES = [
-  {id: 0, name: "Diego", assets: [ASSETS[0], ASSETS[2]]},
-  {id: 1, name: "Itzel", assets: [ASSETS[1], ASSETS[0]]},
-  {id: 2, name: "Itzdi", assets: [ASSETS[2], ASSETS[1]]},
+  {
+    employeeId: 1,
+    personId: 2,
+    employeeNumber: 7,
+    entryDate: "2023-07-31T00:00:00",
+    name: "Diego",
+    lastName: "Gutiérrez",
+    curp: "GUCD010528HQRTTGA7",
+    birthDate: "2001-05-28T00:00:00",
+    email: "diegogutcat28@gmail.com",
+    assets: [ASSETS[0], ASSETS[2]]
+  },
+  {
+    employeeId: 1,
+    personId: 2,
+    employeeNumber: 7,
+    entryDate: "2023-07-31T00:00:00",
+    name: "Itzel",
+    lastName: "Ramon",
+    curp: "RAAI011218MQRMLTA0",
+    birthDate: "2001-12-18T00:00:00",
+    email: "itzelramonf@gmail.com",
+    assets: [ASSETS[0], ASSETS[2]]
+  },
+
 ];
 
 const Employee = () => {

@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import moment from 'moment';
 import "../../styles/modal.css";
 import ModalContainer from "./ModalContainer";
 import ModalDelete from "./ModalDelete";
@@ -58,6 +59,10 @@ const EmployeeTable = (props) => {
           <thead>
             <tr>
               <th className="text-left">Nombre</th>
+              <th className="text-left">Apellido</th>
+              <th className="text-left">CURP</th>
+              <th className="text-left">Fecha de nacimiento</th>
+              <th className="text-left">Email</th>
               <th className="text-left">Editar</th>
               <th className="text-left">Eliminar</th>
             </tr>
@@ -66,6 +71,10 @@ const EmployeeTable = (props) => {
             {employees.map((employee, index) => (
               <tr key={index}>
                 <th className="text-left">{employee.name}</th>
+                <th className="text-left">{employee.lastName}</th>
+                <th className="text-left">{employee.curp}</th>
+                <th className="text-left">{moment(employee.birthDate).format('DD/MM/YYYY')}</th>
+                <th className="text-left">{employee.email}</th>
                 <td className="text-left">
                   <button
                     className="btn btn-primary"
