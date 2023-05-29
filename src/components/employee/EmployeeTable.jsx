@@ -17,14 +17,28 @@ const EmployeeTable = (props) => {
   const [editBirthDate, setEditBirthDate] = useState(undefined);
   const [editEmail, setEditEmail] = useState(undefined);
   const [selectedAssetId, setSelectedAssetId] = useState(0);
+  const [editReleaseDate, setEditReleaseDate] = useState("");
+  const [editDeliveryDate, setEditDeliveryDate] = useState("");
 
   const handleDeleteAsset = (employeeId, assetId) => {
     console.log(employeeId, assetId);
   };
 
-  const handleAddAsset = async (employeeId, assetId) => {
-    if (assetId === -1) return;
-    console.log(employeeId, assetId);
+  const handleAddAsset = async (employeeId, assetId, editReleaseDate, editDeliveryDate) => {
+    if (assetId === -1 || editReleaseDate === "" || editDeliveryDate ==="") return;
+    setEditEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      employeeId: employeeId,
+      assetsIds: [
+        ...(prevEmployee.assetsIds || []),
+        {
+          id: selectedAssetId,
+          releaseDate: moment.utc(editReleaseDate).format("YYYY-MM-DD[T]HH:mm:ss"),
+          deliveryDate: moment.utc(editDeliveryDate).format("YYYY-MM-DD[T]HH:mm:ss")
+        }
+      ]
+    }));
+    
   };
 
   const handleEditEmployeeName = (newName, employeeId) => {
@@ -59,7 +73,7 @@ const EmployeeTable = (props) => {
     setEditEmployee((prevEmployee) => ({
       ...prevEmployee,
       employeeId: employeeId,
-      birthDate: moment.utc(newBirthDate).format('YYYY-MM-DD[T]HH:mm:ss')
+      birthDate: moment.utc(newBirthDate).format("YYYY-MM-DD[T]HH:mm:ss"),
     }));
   };
 
@@ -302,6 +316,35 @@ const EmployeeTable = (props) => {
               </option>
             ))}
           </select>
+          <div style={{height: "10px"}}></div>
+          <div className="row">
+            <div className="col-form-label col">
+              <p>
+                <b>Liberacion:</b>
+              </p>
+            </div>
+            <div className="col">
+              <input
+                className="form-control"
+                type="date"
+                value={editReleaseDate}
+                onChange={(e) => setEditReleaseDate(e.target.value)}
+              />
+            </div>
+            <div className="col-form-label col">
+              <p>
+                <b>Entrega:</b>
+              </p>
+            </div>
+            <div className="col">
+              <input
+                className="form-control"
+                type="date"
+                value={editDeliveryDate}
+                onChange={(e) => setEditDeliveryDate(e.target.value)}
+              />
+            </div>
+          </div>
           <button
             className="btn btn-primary"
             type="button"
@@ -309,7 +352,9 @@ const EmployeeTable = (props) => {
             onClick={() =>
               handleAddAsset(
                 selectedEmployee.employeeId,
-                parseInt(selectedAssetId)
+                parseInt(selectedAssetId),
+                editReleaseDate,
+                editDeliveryDate
               )
             }
           >
@@ -319,6 +364,9 @@ const EmployeeTable = (props) => {
             <thead>
               <tr>
                 <th className="text-left">Actvos</th>
+                <th className="text-left">Asignación</th>
+                <th className="text-left">Liberación</th>
+                <th className="text-left">Entrega</th>
                 <th className="text-left">Eliminar</th>
               </tr>
             </thead>
@@ -326,6 +374,15 @@ const EmployeeTable = (props) => {
               {selectedEmployee?.assets?.map((asset) => (
                 <tr key={asset.id}>
                   <th className="text-left">{asset.name}</th>
+                  <th className="text-left">
+                    {moment(asset.assignmentDate).format("DD/MM/YYYY")}
+                  </th>
+                  <th className="text-left">
+                    {moment(asset.releaseDate).format("DD/MM/YYYY")}
+                  </th>
+                  <th className="text-left">
+                    {moment(asset.deliveryDate).format("DD/MM/YYYY")}
+                  </th>
                   <th className="text-left">
                     <button
                       className="btn btn-primary"

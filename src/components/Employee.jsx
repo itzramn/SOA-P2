@@ -26,12 +26,18 @@ const EMPLOYEES = [
         name: "MacBook Air",
         description: "Laptop Apple",
         status: true,
+        assignmentDate: "2023-05-02T00:00:00",
+        releaseDate: "2023-05-17T00:00:00",
+        deliveryDate: "2023-05-16T00:00:00",
       },
       {
         id: 3,
         name: "Lapicero",
         description: "Lapicero de juntas",
         status: true,
+        assignmentDate: "2023-05-02T00:00:00",
+        releaseDate: "2023-05-17T00:00:00",
+        deliveryDate: "2023-05-16T00:00:00",
       },
     ],
   },
@@ -51,12 +57,18 @@ const EMPLOYEES = [
         name: "MacBook Air",
         description: "Laptop Apple",
         status: true,
+        assignmentDate: "2023-06-02T00:00:00",
+        releaseDate: "2023-06-17T00:00:00",
+        deliveryDate: "2023-06-16T00:00:00",
       },
       {
         id: 3,
         name: "Lapicero",
         description: "Lapicero de juntas",
         status: true,
+        assignmentDate: "2023-06-02T00:00:00",
+        releaseDate: "2023-06-17T00:00:00",
+        deliveryDate: "2023-06-16T00:00:00",
       },
     ],
   },
@@ -73,14 +85,21 @@ const Employee = () => {
   const [newBirthDate, setNewBirthDate] = useState(undefined);
   const [newEmail, setNewEmail] = useState(undefined);
   const [selectedAssetId, setSelectedAssetId] = useState(0);
+  const [newReleaseDate, setNewReleaseDate] = useState("");
+  const [newDeliveryDate, setNewDeliveryDate] = useState("");
 
-  const handleAddAsset = async (selectedAssetId) => {
-    if (selectedAssetId === -1) return;
+  const handleAddAsset = async (selectedAssetId, newReleaseDate, newDeliveryDate) => {
+    if (selectedAssetId === -1 || newDeliveryDate === "" || newDeliveryDate ==="") return;
     setNewEmployee((prevEmployee) => ({
-      ...prevEmployee, //Copia del objeto
-      assetsIds: prevEmployee.assetsIds //Modificas la propiedad del objeto
-        ? [...prevEmployee.assetsIds, (selectedAssetId)]
-        : [selectedAssetId], //array del objeto
+      ...prevEmployee,
+      assetsIds: [
+        ...(prevEmployee.assetsIds || []),
+        {
+          id: selectedAssetId,
+          releaseDate: moment.utc(newReleaseDate).format("YYYY-MM-DD[T]HH:mm:ss"),
+          deliveryDate: moment.utc(newDeliveryDate).format("YYYY-MM-DD[T]HH:mm:ss")
+        }
+      ]
     }));
   };
 
@@ -128,7 +147,7 @@ const Employee = () => {
     setNewBirthDate(newBirthDate);
     setNewEmployee((prevEmployee) => ({
       ...prevEmployee,
-      birthDate: moment.utc(newBirthDate).format('YYYY-MM-DD[T]HH:mm:ss'),
+      birthDate: moment.utc(newBirthDate).format("YYYY-MM-DD[T]HH:mm:ss"),
     }));
   };
 
@@ -237,12 +256,12 @@ const Employee = () => {
           </div>
           <div style={{height: "10px"}}></div>
           <div className="row">
-            <div className="col-form-label col-sm-7">
+            <div className="col-form-label col-sm-3">
               <p>
-                <b>Fecha de nacimito:</b>
+                <b>Fecha de nacimiento:</b>
               </p>
             </div>
-            <div className="col-sm-5">
+            <div className="col-sm-9">
               <input
                 className="form-control"
                 type="date"
@@ -252,7 +271,7 @@ const Employee = () => {
               />
             </div>
           </div>
-            <div style={{height: "10px"}}></div>
+          <div style={{height: "10px"}}></div>
           <div className="row">
             <div className="col-form-label col-sm-3">
               <p>
@@ -285,11 +304,39 @@ const Employee = () => {
             ))}
           </select>
           <div style={{height: "10px"}}></div>
+          <div className="row">
+            <div className="col-form-label col">
+              <p>
+                <b>Liberacion:</b>
+              </p>
+            </div>
+            <div className="col">
+              <input
+                className="form-control"
+                type="date"
+                value={newReleaseDate}
+                onChange={(e) => setNewReleaseDate(e.target.value)}
+              />
+            </div>
+            <div className="col-form-label col">
+              <p>
+                <b>Entrega:</b>
+              </p>
+            </div>
+            <div className="col">
+              <input
+                className="form-control"
+                type="date"
+                value={newDeliveryDate}
+                onChange={(e) => setNewDeliveryDate(e.target.value)}
+              />
+            </div>
+          </div>
           <button
             className="btn btn-primary"
             type="button"
             style={{marginRight: "10px"}}
-            onClick={() => handleAddAsset(selectedAssetId)}
+            onClick={() => handleAddAsset(selectedAssetId, newReleaseDate, newDeliveryDate)}
           >
             Añadir
           </button>
@@ -297,6 +344,9 @@ const Employee = () => {
             <thead>
               <tr>
                 <th className="text-left">Activos</th>
+                <th className="text-left">Asignación</th>
+                <th className="text-left">Liberación</th>
+                <th className="text-left">Entrega</th>
                 <th className="text-left">Eliminar</th>
               </tr>
             </thead>
