@@ -11,6 +11,7 @@ const AssetTable = (props) => {
             <tr>
               <th className="text-left">Nombre</th>
               <th className="text-left">Descripción</th>
+              <th className="text-left">Estatus</th>
             </tr>
           </thead>
           <tbody>
@@ -18,6 +19,9 @@ const AssetTable = (props) => {
               <tr key={index}>
                 <th className="text-left">{asset.name}</th>
                 <th className="text-left">{asset.description}</th>
+                {asset.status === true ? (
+                  <th className="text-left">Activo</th>
+                ): <th className="text-left">Desactivado</th>}
               </tr>
             ))}
           </tbody>

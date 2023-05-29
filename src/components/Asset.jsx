@@ -3,9 +3,9 @@ import AssetTable from "./asset/AssetTable";
 import ModalContainer from "./employee/ModalContainer";
 
 const ASSETS = [
-  {id: 0, name: "Opcion 1", description: "Descripcion 1"},
-  {id: 1, name: "Opcion 2", description: "Descripcion 2"},
-  {id: 2, name: "Opcion 3", description: "Descripcion 3"},
+  {id: 0, name: "Opcion 1", description: "descripcion 1", status: true},
+  {id: 1, name: "Opcion 2", description: "Descripcion 2", status: false},
+  {id: 2, name: "Opcion 3", description: "descripcion 3", status: true},
 ];
 
 const Asset = () => {
@@ -65,6 +65,7 @@ const Asset = () => {
         </div>
         <AssetTable assets={assets} />
       </div>
+      
       {showModal && (
         <ModalContainer
           onClose={handleCloseShowModal}

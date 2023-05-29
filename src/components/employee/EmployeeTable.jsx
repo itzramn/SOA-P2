@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import moment from 'moment';
+import moment from "moment";
 import "../../styles/modal.css";
 import ModalContainer from "./ModalContainer";
-import ModalDelete from "./ModalDelete";
+// import ModalDelete from "./ModalDelete";
 
 const EmployeeTable = (props) => {
   const {employees, assets} = props;
@@ -10,16 +10,66 @@ const EmployeeTable = (props) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState({});
+  const [edithEmployee, setEditEmployee] = useState({});
+  const [editName, setEditName] = useState(undefined);
+  const [editLastName, setEditLastName] = useState(undefined);
+  const [editCurp, setEditCurp] = useState(undefined);
+  const [editBirthDate, setEditBirthDate] = useState(undefined);
+  const [editEmail, setEditEmail] = useState(undefined);
   const [selectedAssetId, setSelectedAssetId] = useState(0);
-  const [newName, setNewName] = useState(undefined);
 
-  const handleDeleteAsset = (assetId, employeeId) => {
-    console.log("IdAsset:", assetId, "idEmployee:", employeeId);
+  const handleDeleteAsset = (employeeId, assetId) => {
+    console.log(employeeId, assetId);
   };
 
-  const handleAddAsset = async (assetId, employeeId) => {
+  const handleAddAsset = async (employeeId, assetId) => {
     if (assetId === -1) return;
-    console.log("IdAsset:", assetId, "idEmployee:", employeeId);
+    console.log(employeeId, assetId);
+  };
+
+  const handleEditEmployeeName = (newName, employeeId) => {
+    setEditName(newName);
+    setEditEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      employeeId: employeeId,
+      name: newName,
+    }));
+  };
+
+  const handleEditEmployeeLastName = (newLastName, employeeId) => {
+    setEditLastName(newLastName);
+    setEditEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      employeeId: employeeId,
+      lastName: newLastName,
+    }));
+  };
+
+  const handleEditEmployeeCurp = (newCurp, employeeId) => {
+    setEditCurp(newCurp);
+    setEditEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      employeeId: employeeId,
+      curp: newCurp,
+    }));
+  };
+
+  const handleEditEmployeeBirthDate = (newBirthDate, employeeId) => {
+    setEditBirthDate(newBirthDate);
+    setEditEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      employeeId: employeeId,
+      birthDate: newBirthDate,
+    }));
+  };
+
+  const handleEditEmployeeEmail = (newEmail, employeeId) => {
+    setEditEmail(newEmail);
+    setEditEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      employeeId: employeeId,
+      email: newEmail,
+    }));
   };
 
   //Modal Editar
@@ -33,9 +83,11 @@ const EmployeeTable = (props) => {
     setShowEditModal(false);
   };
 
+  //////////////////////////////////////////////////
   //Modal Eliminar
-  const handleShowDeleteModal = () => {
+  const handleShowDeleteModal = (employee) => {
     setShowDeleteModal(true);
+    setSelectedEmployee(employee);
   };
   //Cerrar Modal
   const handleCloseDeleteModal = () => {
@@ -43,12 +95,13 @@ const EmployeeTable = (props) => {
   };
 
   //EDITAR
-  const handleEditEmployeName = (newName, employeeId) => {
-    console.log("newName:", newName, "id:", employeeId);
+  const handleEditEmployeName = (editEmployee) => {
+    console.log(editEmployee);
     setShowEditModal(false);
   };
   //ELIMINAR
-  const handleDeleteEmploye = () => {
+  const handleDeleteEmploye = (employeeId) => {
+    console.log(employeeId);
     setShowDeleteModal(false);
   };
 
@@ -73,7 +126,9 @@ const EmployeeTable = (props) => {
                 <th className="text-left">{employee.name}</th>
                 <th className="text-left">{employee.lastName}</th>
                 <th className="text-left">{employee.curp}</th>
-                <th className="text-left">{moment(employee.birthDate).format('DD/MM/YYYY')}</th>
+                <th className="text-left">
+                  {moment(employee.birthDate).format("DD/MM/YYYY")}
+                </th>
                 <th className="text-left">{employee.email}</th>
                 <td className="text-left">
                   <button
@@ -88,7 +143,7 @@ const EmployeeTable = (props) => {
                   <button
                     className="btn btn-primary"
                     type="button"
-                    onClick={handleShowDeleteModal}
+                    onClick={() => handleShowDeleteModal(employee)}
                   >
                     Eliminar
                   </button>
@@ -101,25 +156,134 @@ const EmployeeTable = (props) => {
       {showEditModal && (
         <ModalContainer
           onClose={handleCloseEditModal}
-          onSucces={() => handleEditEmployeName(newName, selectedEmployee.id)}
+          onSucces={() => handleEditEmployeName(edithEmployee)}
         >
-          <div className="input-form-content row full">
-            <div className="label-normal">
+          <div className="row">
+            <div className="col-form-label col-sm-3">
               <p>
                 <b>Nombre:</b>
               </p>
             </div>
-            <div className="column full">
+            <div className="col-sm-9">
               <input
                 className="form-control"
                 type="text"
                 placeholder="Escribe un nombre"
                 value={
-                  typeof newName === "undefined"
+                  typeof editName === "undefined"
                     ? selectedEmployee.name
-                    : newName
+                    : editName
                 }
-                onChange={(e) => setNewName(e.target.value)}
+                onChange={(e) =>
+                  handleEditEmployeeName(
+                    e.target.value,
+                    selectedEmployee.employeeId
+                  )
+                }
+              />
+            </div>
+          </div>
+          <div style={{height: "10px"}}></div>
+          <div className="row">
+            <div className="col-form-label col-sm-3">
+              <p>
+                <b>Apellido:</b>
+              </p>
+            </div>
+            <div className="col-sm-9">
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Escribe un nombre"
+                value={
+                  typeof editLastName === "undefined"
+                    ? selectedEmployee.lastName
+                    : editLastName
+                }
+                onChange={(e) =>
+                  handleEditEmployeeLastName(
+                    e.target.value,
+                    selectedEmployee.employeeId
+                  )
+                }
+              />
+            </div>
+          </div>
+          {/* <div style={{height: "10px"}}></div> */}
+          <div className="row">
+            <div className="col-form-label col-sm-3">
+              <p>
+                <b>CURP:</b>
+              </p>
+            </div>
+            <div className="col-sm-9">
+              <input
+                className="form-control"
+                type="text"
+                placeholder="Escribe un nombre"
+                value={
+                  typeof editCurp === "undefined"
+                    ? selectedEmployee.curp
+                    : editCurp
+                }
+                onChange={(e) =>
+                  handleEditEmployeeCurp(
+                    e.target.value,
+                    selectedEmployee.employeeId
+                  )
+                }
+              />
+            </div>
+          </div>
+          <div style={{height: "10px"}}></div>
+          <div className="row">
+            <div className="col-form-label col-sm-7">
+              <p>
+                <b>Fecha de nacimiento:</b>
+              </p>
+            </div>
+            <div className="col-sm-5">
+              <input
+                className="form-control"
+                type="date"
+                placeholder="Escribe un nombre"
+                value={
+                  typeof editBirthDate === "undefined"
+                    ? moment(selectedEmployee.birthDate).format("YYYY-MM-DD")
+                    : editBirthDate
+                }
+                onChange={(e) =>
+                  handleEditEmployeeBirthDate(
+                    e.target.value,
+                    selectedEmployee.employeeId
+                  )
+                }
+              />
+            </div>
+          </div>
+          <div style={{height: "10px"}}></div>
+          <div className="row">
+            <div className="col-form-label col-sm-3">
+              <p>
+                <b>Email:</b>
+              </p>
+            </div>
+            <div className="col-sm-9">
+              <input
+                className="form-control"
+                type="email"
+                placeholder="ejemplo@gmail.com"
+                value={
+                  typeof editEmail === "undefined"
+                    ? selectedEmployee.email
+                    : editEmail
+                }
+                onChange={(e) =>
+                  handleEditEmployeeEmail(
+                    e.target.value,
+                    selectedEmployee.employeeId
+                  )
+                }
               />
             </div>
           </div>
@@ -142,7 +306,12 @@ const EmployeeTable = (props) => {
             className="btn btn-primary"
             type="button"
             style={{marginRight: "10px"}}
-            onClick={() => handleAddAsset(selectedAssetId, selectedEmployee.id)}
+            onClick={() =>
+              handleAddAsset(
+                selectedEmployee.employeeId,
+                parseInt(selectedAssetId)
+              )
+            }
           >
             Añadir
           </button>
@@ -162,7 +331,7 @@ const EmployeeTable = (props) => {
                       className="btn btn-primary"
                       type="button"
                       onClick={() =>
-                        handleDeleteAsset(asset.id, selectedEmployee.id)
+                        handleDeleteAsset(selectedEmployee.employeeId, asset.id)
                       }
                       style={{marginRight: "10px"}}
                     >
@@ -177,10 +346,16 @@ const EmployeeTable = (props) => {
       )}
 
       {showDeleteModal && (
-        <ModalDelete
+        <ModalContainer
           onClose={handleCloseDeleteModal}
-          onDelete={handleDeleteEmploye}
-        />
+          onSucces={() => handleDeleteEmploye(selectedEmployee.employeeId)}
+        >
+          <div className="full row align-center justify-center">
+            <p className="text-center color-black font-huge weight-bold">
+              ¿Está seguro que desea eliminar al empleado?
+            </p>
+          </div>
+        </ModalContainer>
       )}
     </React.Fragment>
   );
