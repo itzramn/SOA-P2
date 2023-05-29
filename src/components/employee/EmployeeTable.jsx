@@ -59,7 +59,7 @@ const EmployeeTable = (props) => {
     setEditEmployee((prevEmployee) => ({
       ...prevEmployee,
       employeeId: employeeId,
-      birthDate: newBirthDate,
+      birthDate: moment.utc(newBirthDate).format('YYYY-MM-DD[T]HH:mm:ss')
     }));
   };
 

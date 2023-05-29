@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import moment from "moment";
 import EmployeeTable from "./employee/EmployeeTable";
 import ModalContainer from "./employee/ModalContainer";
 
@@ -127,7 +128,7 @@ const Employee = () => {
     setNewBirthDate(newBirthDate);
     setNewEmployee((prevEmployee) => ({
       ...prevEmployee,
-      birthDate: newBirthDate,
+      birthDate: moment.utc(newBirthDate).format('YYYY-MM-DD[T]HH:mm:ss'),
     }));
   };
 
