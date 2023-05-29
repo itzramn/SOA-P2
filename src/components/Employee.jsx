@@ -93,7 +93,7 @@ const Employee = () => {
     setNewEmployee((prevEmployee) => ({
       ...prevEmployee,
       assetsIds: [
-        ...(prevEmployee.assetsIds || []),
+        ...(prevEmployee.assetsIds || []), //verifica si prevEmployee.assetsIds existe y tiene un valor
         {
           id: selectedAssetId,
           releaseDate: moment.utc(newReleaseDate).format("YYYY-MM-DD[T]HH:mm:ss"),

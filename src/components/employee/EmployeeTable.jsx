@@ -26,19 +26,7 @@ const EmployeeTable = (props) => {
 
   const handleAddAsset = async (employeeId, assetId, editReleaseDate, editDeliveryDate) => {
     if (assetId === -1 || editReleaseDate === "" || editDeliveryDate ==="") return;
-    setEditEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      employeeId: employeeId,
-      assetsIds: [
-        ...(prevEmployee.assetsIds || []),
-        {
-          id: selectedAssetId,
-          releaseDate: moment.utc(editReleaseDate).format("YYYY-MM-DD[T]HH:mm:ss"),
-          deliveryDate: moment.utc(editDeliveryDate).format("YYYY-MM-DD[T]HH:mm:ss")
-        }
-      ]
-    }));
-    
+    console.log(employeeId, assetId, editReleaseDate, editDeliveryDate)
   };
 
   const handleEditEmployeeName = (newName, employeeId) => {
