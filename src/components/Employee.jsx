@@ -26,7 +26,7 @@ const Employee = () => {
       newDeliveryDate === ""
     )
       return;
-      const selectedAsset = assets.find((asset) => asset.id === selectedAssetId);
+    const selectedAsset = assets.find((asset) => asset.id === selectedAssetId);
     setNewEmployee((prevEmployee) => ({
       ...prevEmployee,
       assets: [
