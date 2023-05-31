@@ -12,19 +12,14 @@ const EmployeeTable = (props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState({});
   const [editEmployee, setEditEmployee] = useState({});
-//   const [selectedAssetId, setSelectedAssetId] = useState(0);
-//   const [editReleaseDate, setEditReleaseDate] = useState("");
-//   const [editDeliveryDate, setEditDeliveryDate] = useState("");
-  const [addAsset, setAddAsset] = useState({});
-
-  //   selectedAssetId, newReleaseDate, newDeliveryDate
+  const [selectedAsset, setSelectedAsset] = useState({});
 
   const handleDeleteAsset = (employeeId, assetId) => {
     console.log(employeeId, assetId);
   };
 
-  const handleAddAssetField = (field, value, employeeId) => {
-    setAddAsset((prevEmployee) => ({
+  const handleSelectAsset = (field, value, employeeId) => {
+   setSelectedAsset((prevEmployee) => ({
       ...prevEmployee,
       employeeId: employeeId,
       [field]: value,
@@ -270,8 +265,8 @@ const EmployeeTable = (props) => {
           <div style={{height: "10px"}}></div>
           <select
             className="form-select"
-            onChange={(e) => handleAddAssetField('assetId', parseInt(e.target.value), selectedEmployee.employeeId)}
-            value={addAsset.id || -1}
+            onChange={(e) => handleSelectAsset('assetId', parseInt(e.target.value), selectedEmployee.employeeId)}
+            value={selectedAsset.id || -1}
           >
             <option value={-1} disabled>
               Seleccionar
@@ -293,8 +288,8 @@ const EmployeeTable = (props) => {
               <input
                 className="form-control"
                 type="date"
-                value={addAsset.releseDate }
-                onChange={(e) => handleAddAssetField('releseDate', e.target.value, selectedEmployee.employeeId)}
+                value={selectedAsset.releseDate }
+                onChange={(e) => handleSelectAsset('releseDate', e.target.value, selectedEmployee.employeeId)}
               />
             </div>
             <div className="col-form-label col">
@@ -306,8 +301,8 @@ const EmployeeTable = (props) => {
               <input
                 className="form-control"
                 type="date"
-                value={addAsset.deliveryDate }
-                onChange={(e) => handleAddAssetField('deliveryDate', e.target.value, selectedEmployee.employeeId)}
+                value={selectedAsset.deliveryDate }
+                onChange={(e) => handleSelectAsset('deliveryDate', e.target.value, selectedEmployee.employeeId)}
               />
             </div>
           </div>
@@ -315,7 +310,7 @@ const EmployeeTable = (props) => {
             className="btn btn-primary"
             type="button"
             style={{marginRight: "10px"}}
-            onClick={() => handleAddAsset(addAsset)}
+            onClick={() => handleAddAsset(selectedAsset)}
           >
             Añadir
           </button>
