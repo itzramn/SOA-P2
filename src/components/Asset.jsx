@@ -67,7 +67,9 @@ const Asset = () => {
                   </button>
                </div>
             </div>
-            <AssetTable assets={assets} />
+            <AssetTable assets={assets}
+            fetchAssets={fetchAssets}
+             />
          </div>
 
          {showModal && (

@@ -14,25 +14,10 @@ const EmployeeTable = (props) => {
   const [editEmployee, setEditEmployee] = useState({});
   const [selectedAsset, setSelectedAsset] = useState({});
 
-  const handleSelectAsset = (field, value, employeeId) => {
-   setSelectedAsset((prevEmployee) => ({
-      ...prevEmployee,
-      employeeId: employeeId,
-      [field]: value,
-    }))
-  };
-
-  const handleEditEmployeeField = (field, value) => {
-    setEditEmployee((prevEmployee) => ({
-      ...prevEmployee,
-      [field]: value,
-    }));
-  };
-  //////////////////////////////////////////////////
   const clearModalStates = () => {
-   setSelectedEmployee({});
-   setEditEmployee({});
- };
+    setSelectedEmployee({});
+    setEditEmployee({});
+  };
 
   const handleShowEditModal = (employee) => {
     setShowEditModal(true);
@@ -53,21 +38,41 @@ const EmployeeTable = (props) => {
     clearModalStates();
   };
 
- //////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////
+  const handleSelectAsset = (field, value, employeeId) => {
+    setSelectedAsset((prevEmployee) => ({
+      ...prevEmployee,
+      employeeId: employeeId,
+      [field]: value,
+    }));
+  };
+
+  const handleEditEmployeeField = (field, value) => {
+    setEditEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      [field]: value,
+    }));
+  };
+
   const handleEditEmployee = async (employeeId, editEmployee) => {
-    await editEmployeesField(employeeId, editEmployee)
+    await editEmployeesField(employeeId, editEmployee);
     fetchEmployees();
     setShowEditModal(false);
   };
 
   const handleAddAsset = async (addAsset) => {
-    if (!addAsset.assetId || addAsset.assetId === -1 || !addAsset.releseDate || !addAsset.deliveryDate) {
-       return;
-     }
+    if (
+      !addAsset.assetId ||
+      addAsset.assetId === -1 ||
+      !addAsset.releseDate ||
+      !addAsset.deliveryDate
+    ) {
+      return;
+    }
     await addAssetEmployee([addAsset]);
     fetchEmployees();
     fetchAssets();
-   };
+  };
 
   const handleDeleteAsset = async (employeeId, assetId) => {
     await deleteAssetEmployee(employeeId, assetId);
@@ -131,7 +136,9 @@ const EmployeeTable = (props) => {
       {showEditModal && (
         <ModalContainer
           onClose={handleCloseEditModal}
-          onSucces={() => handleEditEmployee(selectedEmployee.employeeId, editEmployee)}
+          onSucces={() =>
+            handleEditEmployee(selectedEmployee.employeeId, editEmployee)
+          }
         >
           <div className="row">
             <div className="col-form-label col-sm-3">
@@ -150,10 +157,7 @@ const EmployeeTable = (props) => {
                     : editEmployee.name
                 }
                 onChange={(e) =>
-                  handleEditEmployeeField(
-                    "name",
-                    e.target.value
-                  )
+                  handleEditEmployeeField("name", e.target.value)
                 }
               />
             </div>
@@ -176,10 +180,7 @@ const EmployeeTable = (props) => {
                     : editEmployee.lastName
                 }
                 onChange={(e) =>
-                  handleEditEmployeeField(
-                    "lastName",
-                    e.target.value
-                  )
+                  handleEditEmployeeField("lastName", e.target.value)
                 }
               />
             </div>
@@ -202,10 +203,7 @@ const EmployeeTable = (props) => {
                     : editEmployee.curp
                 }
                 onChange={(e) =>
-                  handleEditEmployeeField(
-                    "curp",
-                    e.target.value
-                  )
+                  handleEditEmployeeField("curp", e.target.value)
                 }
               />
             </div>
@@ -228,10 +226,7 @@ const EmployeeTable = (props) => {
                     : editEmployee.birthDate
                 }
                 onChange={(e) =>
-                  handleEditEmployeeField(
-                    "birthDate",
-                    e.target.value
-                  )
+                  handleEditEmployeeField("birthDate", e.target.value)
                 }
               />
             </div>
@@ -254,10 +249,7 @@ const EmployeeTable = (props) => {
                     : editEmployee.email
                 }
                 onChange={(e) =>
-                  handleEditEmployeeField(
-                    "email",
-                    e.target.value
-                  )
+                  handleEditEmployeeField("email", e.target.value)
                 }
               />
             </div>
@@ -265,7 +257,13 @@ const EmployeeTable = (props) => {
           <div style={{height: "10px"}}></div>
           <select
             className="form-select"
-            onChange={(e) => handleSelectAsset('assetId', parseInt(e.target.value), selectedEmployee.employeeId)}
+            onChange={(e) =>
+              handleSelectAsset(
+                "assetId",
+                parseInt(e.target.value),
+                selectedEmployee.employeeId
+              )
+            }
             value={selectedAsset.assetId || -1}
           >
             <option value={-1} disabled>
@@ -288,8 +286,14 @@ const EmployeeTable = (props) => {
               <input
                 className="form-control"
                 type="date"
-                value={selectedAsset.releseDate }
-                onChange={(e) => handleSelectAsset('releseDate', e.target.value, selectedEmployee.employeeId)}
+                value={selectedAsset.releseDate}
+                onChange={(e) =>
+                  handleSelectAsset(
+                    "releseDate",
+                    e.target.value,
+                    selectedEmployee.employeeId
+                  )
+                }
               />
             </div>
             <div className="col-form-label col">
@@ -301,8 +305,14 @@ const EmployeeTable = (props) => {
               <input
                 className="form-control"
                 type="date"
-                value={selectedAsset.deliveryDate }
-                onChange={(e) => handleSelectAsset('deliveryDate', e.target.value, selectedEmployee.employeeId)}
+                value={selectedAsset.deliveryDate}
+                onChange={(e) =>
+                  handleSelectAsset(
+                    "deliveryDate",
+                    e.target.value,
+                    selectedEmployee.employeeId
+                  )
+                }
               />
             </div>
           </div>

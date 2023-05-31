@@ -43,3 +43,12 @@ export const deleteAssetEmployee = async (employeeId, assetId) => {
       console.log(error);
    }
 };
+
+export const deleteAsset = async (assetId) => {
+   try {
+      const response = await axios.delete(`${apiUrl}/Assets/${assetId}`);
+      return response.data;
+   } catch (error) {
+      console.log(error);
+   }
+};
