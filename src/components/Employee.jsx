@@ -46,11 +46,10 @@ const Employee = () => {
   };
 
   const handleDeleteAsset = (selectedAssetId) => {
-    const employeeAssetsIds = newEmployee.assetsIds;
-    const filteredAssetsIds = employeeAssetsIds.filter(
-      (employeeAssetId) => employeeAssetId !== selectedAssetId
+    const filteredAssetsIds = newEmployee.assets.filter(
+      (employeeAsset) => employeeAsset.id !== selectedAssetId
     );
-
+  
     setNewEmployee((prevEmployee) => ({
       ...prevEmployee,
       assets: filteredAssetsIds,
@@ -273,7 +272,6 @@ const Employee = () => {
             <tbody>
               {newEmployee?.assets?.map((asset) => (
                 <tr key={asset.id}>
-                  {console.log(asset)}
                   <th className="text-left">{asset.name}</th>
                   <th className="text-left">{moment(asset.releaseDate).format('DD/MM/YYYY')}</th>
                   <th className="text-left">{moment(asset.deliveryDate).format('DD/MM/YYYY')}</th>
