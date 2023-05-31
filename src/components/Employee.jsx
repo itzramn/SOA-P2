@@ -10,20 +10,16 @@ const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [assets, setAssets] = useState([]);
   const [newEmployee, setNewEmployee] = useState({});
-
   const [selectedAssetId, setSelectedAssetId] = useState(0);
-  const [newReleaseDate, setNewReleaseDate] = useState("");
   const [newDeliveryDate, setNewDeliveryDate] = useState("");
 
   const handleAddAsset = async (
     selectedAssetId,
-    newReleaseDate,
     newDeliveryDate
   ) => {
     if (
       selectedAssetId === -1 ||
-      newDeliveryDate === "" ||
-      newDeliveryDate === ""
+      newDeliveryDate === "" 
     )
       return;
     const selectedAsset = assets.find((asset) => asset.id === selectedAssetId);
@@ -34,9 +30,6 @@ const Employee = () => {
         {
           id: selectedAssetId,
           name: selectedAsset? selectedAsset.name : "",
-          releaseDate: moment
-            .utc(newReleaseDate)
-            .format("YYYY-MM-DD[T]HH:mm:ss"),
           deliveryDate: moment
             .utc(newDeliveryDate)
             .format("YYYY-MM-DD[T]HH:mm:ss"),
@@ -87,9 +80,11 @@ const Employee = () => {
   };
 
   const handleCreateEmployee = async (newEmployee) => {
+    console.log(newEmployee);
     await createdEmployees(newEmployee);
     fetchEmployees();
     setShowModal(false);
+    clearModalStates();
   };
 
   useEffect(() => {
@@ -213,7 +208,7 @@ const Employee = () => {
           <select
             className="form-select"
             onChange={(e) => setSelectedAssetId(parseInt(e.target.value))}
-            value={selectedAssetId || -1}
+            value={selectedAssetId || -1 || ""}
           >
             <option value={-1} disabled>
               Seleccionar
@@ -226,19 +221,6 @@ const Employee = () => {
           </select>
           <div style={{height: "10px"}}></div>
           <div className="row">
-            <div className="col-form-label col">
-              <p>
-                <b>Liberacion:</b>
-              </p>
-            </div>
-            <div className="col">
-              <input
-                className="form-control"
-                type="date"
-                value={newReleaseDate}
-                onChange={(e) => setNewReleaseDate(e.target.value)}
-              />
-            </div>
             <div className="col-form-label col">
               <p>
                 <b>Entrega:</b>
@@ -258,7 +240,7 @@ const Employee = () => {
             type="button"
             style={{marginRight: "10px"}}
             onClick={() =>
-              handleAddAsset(selectedAssetId, newReleaseDate, newDeliveryDate)
+              handleAddAsset(selectedAssetId, newDeliveryDate)
             }
           >
             Añadir
@@ -267,7 +249,6 @@ const Employee = () => {
             <thead>
               <tr>
                 <th className="text-left">Activos</th>
-                <th className="text-left">Liberación</th>
                 <th className="text-left">Entrega</th>
                 <th className="text-left">Eliminar</th>
               </tr>
@@ -276,7 +257,6 @@ const Employee = () => {
               {newEmployee?.assets?.map((asset) => (
                 <tr key={asset.id}>
                   <th className="text-left">{asset.name}</th>
-                  <th className="text-left">{moment(asset.releaseDate).format('DD/MM/YYYY')}</th>
                   <th className="text-left">{moment(asset.deliveryDate).format('DD/MM/YYYY')}</th>
                   <th className="text-left">
                     <button

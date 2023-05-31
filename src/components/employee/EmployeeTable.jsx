@@ -3,7 +3,7 @@ import moment from "moment";
 import "../../styles/modal.css";
 import ModalContainer from "./ModalContainer";
 import {editEmployeesField, deleteEmployee} from "../../api/employee.api";
-import {addAssetEmployee, deleteAssetEmployee} from "../../api/asset.api";
+import {addAssetToEmployee, deleteAssetFromEmployee, releaseAsset} from "../../api/asset.api";
 
 const EmployeeTable = (props) => {
   const {employees = [], assets = [], fetchEmployees, fetchAssets} = props;
@@ -47,6 +47,56 @@ const EmployeeTable = (props) => {
     }));
   };
 
+  const findName = (assetId) => {
+    const asset = assets.find((asset) => asset.id === assetId);
+    return asset?.name || "";
+  };
+
+  const handleAddAsset = async (addAsset) => {
+    if (
+      !addAsset.assetId ||
+      addAsset.assetId === -1 ||
+      !addAsset.deliveryDate
+    ) {
+      return;
+    }
+    setSelectedEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      assets: [
+        ...prevEmployee.assets,
+        {
+          ...addAsset,
+          name: findName(addAsset.assetId),
+        },
+      ],
+    }));
+
+    await addAssetToEmployee([addAsset]);
+    setSelectedAsset((...prevAsset)=>({
+      ...prevAsset,
+      assetId: 0
+    }));
+    fetchAssets(true);
+    fetchEmployees();
+  };
+
+  const handleDeleteAsset = async (employeeId, assetId) => {
+    await deleteAssetFromEmployee(employeeId, assetId);
+    const filteredAssetsIds = selectedEmployee.assets.filter(
+      (employeeAsset) => employeeAsset.id !== assetId
+    );
+    setSelectedEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      assets: filteredAssetsIds,
+    }));
+    setSelectedAsset((...prevAsset)=>({
+      ...prevAsset,
+      assetId: 0
+    }));
+    fetchEmployees();
+    fetchAssets(true);
+  };
+
   const handleEditEmployeeField = (field, value) => {
     setEditEmployee((prevEmployee) => ({
       ...prevEmployee,
@@ -60,30 +110,18 @@ const EmployeeTable = (props) => {
     setShowEditModal(false);
   };
 
-  const handleAddAsset = async (addAsset) => {
-    if (
-      !addAsset.assetId ||
-      addAsset.assetId === -1 ||
-      !addAsset.releseDate ||
-      !addAsset.deliveryDate
-    ) {
-      return;
-    }
-    await addAssetEmployee([addAsset]);
-    fetchEmployees();
-    fetchAssets();
-  };
-
-  const handleDeleteAsset = async (employeeId, assetId) => {
-    await deleteAssetEmployee(employeeId, assetId);
-  };
-
   //ELIMINAR
   const handleDeleteEmploye = async (employeeId) => {
     await deleteEmployee(employeeId);
     fetchEmployees();
     setShowDeleteModal(false);
   };
+
+  const handleAssetRelease = async (assetId) => {
+    await releaseAsset(assetId);
+    fetchEmployees();
+    fetchAssets(true);
+  }
 
   return (
     <React.Fragment>
@@ -254,7 +292,6 @@ const EmployeeTable = (props) => {
               />
             </div>
           </div>
-          <div style={{height: "10px"}}></div>
           <select
             className="form-select"
             onChange={(e) =>
@@ -279,25 +316,6 @@ const EmployeeTable = (props) => {
           <div className="row">
             <div className="col-form-label col">
               <p>
-                <b>Liberacion:</b>
-              </p>
-            </div>
-            <div className="col">
-              <input
-                className="form-control"
-                type="date"
-                value={selectedAsset.releseDate}
-                onChange={(e) =>
-                  handleSelectAsset(
-                    "releseDate",
-                    e.target.value,
-                    selectedEmployee.employeeId
-                  )
-                }
-              />
-            </div>
-            <div className="col-form-label col">
-              <p>
                 <b>Entrega:</b>
               </p>
             </div>
@@ -305,7 +323,7 @@ const EmployeeTable = (props) => {
               <input
                 className="form-control"
                 type="date"
-                value={selectedAsset.deliveryDate}
+                value={selectedAsset.deliveryDate || ""}
                 onChange={(e) =>
                   handleSelectAsset(
                     "deliveryDate",
@@ -327,26 +345,41 @@ const EmployeeTable = (props) => {
           <table className="table">
             <thead>
               <tr>
-                <th className="text-left">Actvos</th>
+                <th className="text-left">Activos</th>
                 <th className="text-left">Asignación</th>
-                <th className="text-left">Liberación</th>
                 <th className="text-left">Entrega</th>
+                <th className="text-left">Liberación</th>
                 <th className="text-left">Eliminar</th>
               </tr>
             </thead>
             <tbody>
               {selectedEmployee?.assets?.map((asset) => (
                 <tr key={asset.id}>
+                  {console.log(asset)}
                   <th className="text-left">{asset.name}</th>
                   <th className="text-left">
                     {moment(asset.assignmentDate).format("DD/MM/YYYY")}
                   </th>
                   <th className="text-left">
-                    {moment(asset.releaseDate).format("DD/MM/YYYY")}
-                  </th>
-                  <th className="text-left">
                     {moment(asset.deliveryDate).format("DD/MM/YYYY")}
-                  </th>
+                  </th>  
+                  {!asset.releaseDate ?  
+                  <th className="text-left">
+                  <button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={() =>
+                        handleAssetRelease(asset.id)
+                      }
+                      style={{marginRight: "10px"}}
+                    >
+                      Liberar
+                    </button>
+                </th>
+                  : <th className="text-left">
+                    {moment(asset.releaseDate).format("DD/MM/YYYY")}
+                  </th>}
+                  
                   <th className="text-left">
                     <button
                       className="btn btn-primary"
