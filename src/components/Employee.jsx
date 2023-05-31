@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import moment from "moment";
 import EmployeeTable from "./employee/EmployeeTable";
 import ModalContainer from "./employee/ModalContainer";
-import {getEmployees} from "../api/employee.api";
+import {getEmployees, createdEmployees} from "../api/employee.api";
 import {getAssets} from "../api/asset.api";
 
 const Employee = () => {
@@ -63,10 +63,6 @@ const Employee = () => {
     }));
   };
 
-  const handleCreateEmployee = (newEmployee) => {
-    console.log(newEmployee);
-  };
-
   const clearModalStates = () => {
     setNewEmployee({});
   };
@@ -88,6 +84,12 @@ const Employee = () => {
   const fetchAssets = async (status) => {
     const assets = await getAssets(status);
     setAssets(assets);
+  };
+
+  const handleCreateEmployee = async (newEmployee) => {
+    await createdEmployees(newEmployee);
+    fetchEmployees();
+    setShowModal(false);
   };
 
   useEffect(() => {
@@ -116,6 +118,7 @@ const Employee = () => {
           employees={employees}
           assets={assets}
           fetchEmployees={fetchEmployees}
+          fetchAssets={fetchAssets}
         />
       </div>
       {showModal && (

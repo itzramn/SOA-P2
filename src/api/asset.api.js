@@ -15,15 +15,31 @@ export const getAssets = async status => {
    }
 };
 
-export const createAsset = async (name, description) => {
+export const createAsset = async (newAsset) => {
    try {
-      const response = await axios.post(`${apiUrl}/Assets`, {
-         name,
-         description,
-      });
+      const response = await axios.post(`${apiUrl}/Assets`, newAsset);
       return response.data;
    } catch (error) {
       console.log(error);
       return null;
+   }
+};
+
+export const addAssetEmployee = async (newAsset) => {
+   try {
+      const response = await axios.post(`${apiUrl}/Employees/Assets`, newAsset);
+      return response.data;
+   } catch (error) {
+      console.log(error);
+      return null;
+   }
+};
+
+export const deleteAssetEmployee = async (employeeId, assetId) => {
+   try {
+      const response = await axios.delete(`${apiUrl}/Employees/${employeeId}/Assets/${assetId}`);
+      return response.data;
+   } catch (error) {
+      console.log(error);
    }
 };

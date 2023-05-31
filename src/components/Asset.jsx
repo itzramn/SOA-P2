@@ -3,12 +3,6 @@ import AssetTable from './asset/AssetTable';
 import ModalContainer from './employee/ModalContainer';
 import { createAsset, getAssets } from '../api/asset.api';
 
-/* const ASSETS = [
-  {id: 0, name: "Opcion 1", description: "descripcion 1", status: true},
-  {id: 1, name: "Opcion 2", description: "Descripcion 2", status: false},
-  {id: 2, name: "Opcion 3", description: "descripcion 3", status: true},
-]; */
-
 const Asset = () => {
    const [showModal, setShowModal] = useState(false);
    const [assets, setAssets] = useState([]);
@@ -35,6 +29,7 @@ const Asset = () => {
    const handleCreateAsset = async newAsset => {
       await createAsset(newAsset);
       fetchAssets();
+      setShowModal(false);
    };
 
    const handleShowModal = () => {

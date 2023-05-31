@@ -2,21 +2,17 @@ import React, {useState} from "react";
 import moment from "moment";
 import "../../styles/modal.css";
 import ModalContainer from "./ModalContainer";
-import {deleteEmployee} from "../../api/employee.api";
-// import ModalDelete from "./ModalDelete";
+import {editEmployeesField, deleteEmployee} from "../../api/employee.api";
+import {addAssetEmployee, deleteAssetEmployee} from "../../api/asset.api";
 
 const EmployeeTable = (props) => {
-  const {employees = [], assets = [], fetchEmployees} = props;
+  const {employees = [], assets = [], fetchEmployees, fetchAssets} = props;
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState({});
   const [editEmployee, setEditEmployee] = useState({});
   const [selectedAsset, setSelectedAsset] = useState({});
-
-  const handleDeleteAsset = (employeeId, assetId) => {
-    console.log(employeeId, assetId);
-  };
 
   const handleSelectAsset = (field, value, employeeId) => {
    setSelectedAsset((prevEmployee) => ({
@@ -26,56 +22,57 @@ const EmployeeTable = (props) => {
     }))
   };
 
-  const handleAddAsset = (addAsset) => {
-   if (!addAsset.assetId || addAsset.assetId === -1 || !addAsset.releseDate || !addAsset.deliveryDate) {
-      return;
-    }
-   console.log([addAsset]);
-  };
-
-  const handleEditEmployeeField = (field, value, employeeId) => {
+  const handleEditEmployeeField = (field, value) => {
     setEditEmployee((prevEmployee) => ({
       ...prevEmployee,
-      id: employeeId,
       [field]: value,
     }));
   };
-
-  //limpiar 
+  //////////////////////////////////////////////////
   const clearModalStates = () => {
    setSelectedEmployee({});
    setEditEmployee({});
  };
 
-  //Modal Editar
   const handleShowEditModal = (employee) => {
     setShowEditModal(true);
     setSelectedEmployee(employee);
   };
 
-  //Cerrar Modal
   const handleCloseEditModal = () => {
     setShowEditModal(false);
     clearModalStates();
   };
-
   //////////////////////////////////////////////////
-  //Modal Eliminar
   const handleShowDeleteModal = (employee) => {
     setShowDeleteModal(true);
     setSelectedEmployee(employee);
   };
-  //Cerrar Modal
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
     clearModalStates();
   };
 
-  //EDITAR
-  const handleEditEmployee = (editEmployee) => {
-    console.log(editEmployee);
+ //////////////////////////////////////////////////////
+  const handleEditEmployee = async (employeeId, editEmployee) => {
+    await editEmployeesField(employeeId, editEmployee)
+    fetchEmployees();
     setShowEditModal(false);
   };
+
+  const handleAddAsset = async (addAsset) => {
+    if (!addAsset.assetId || addAsset.assetId === -1 || !addAsset.releseDate || !addAsset.deliveryDate) {
+       return;
+     }
+    await addAssetEmployee([addAsset]);
+    fetchEmployees();
+    fetchAssets();
+   };
+
+  const handleDeleteAsset = async (employeeId, assetId) => {
+    await deleteAssetEmployee(employeeId, assetId);
+  };
+
   //ELIMINAR
   const handleDeleteEmploye = async (employeeId) => {
     await deleteEmployee(employeeId);
@@ -134,7 +131,7 @@ const EmployeeTable = (props) => {
       {showEditModal && (
         <ModalContainer
           onClose={handleCloseEditModal}
-          onSucces={() => handleEditEmployee(editEmployee)}
+          onSucces={() => handleEditEmployee(selectedEmployee.employeeId, editEmployee)}
         >
           <div className="row">
             <div className="col-form-label col-sm-3">
@@ -155,8 +152,7 @@ const EmployeeTable = (props) => {
                 onChange={(e) =>
                   handleEditEmployeeField(
                     "name",
-                    e.target.value,
-                    selectedEmployee.employeeId
+                    e.target.value
                   )
                 }
               />
@@ -182,8 +178,7 @@ const EmployeeTable = (props) => {
                 onChange={(e) =>
                   handleEditEmployeeField(
                     "lastName",
-                    e.target.value,
-                    selectedEmployee.employeeId
+                    e.target.value
                   )
                 }
               />
@@ -209,8 +204,7 @@ const EmployeeTable = (props) => {
                 onChange={(e) =>
                   handleEditEmployeeField(
                     "curp",
-                    e.target.value,
-                    selectedEmployee.employeeId
+                    e.target.value
                   )
                 }
               />
@@ -236,8 +230,7 @@ const EmployeeTable = (props) => {
                 onChange={(e) =>
                   handleEditEmployeeField(
                     "birthDate",
-                    e.target.value,
-                    selectedEmployee.employeeId
+                    e.target.value
                   )
                 }
               />
@@ -263,8 +256,7 @@ const EmployeeTable = (props) => {
                 onChange={(e) =>
                   handleEditEmployeeField(
                     "email",
-                    e.target.value,
-                    selectedEmployee.employeeId
+                    e.target.value
                   )
                 }
               />
