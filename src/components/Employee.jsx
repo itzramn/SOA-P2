@@ -68,12 +68,17 @@ const Employee = () => {
     console.log(newEmployee);
   };
 
+  const clearModalStates = () => {
+    setNewEmployee({});
+  };
+
   const handleShowModal = () => {
     setShowModal(true);
   };
 
   const handleCloseShowModal = () => {
     setShowModal(false);
+    clearModalStates();
   };
 
   const fetchEmployees = async () => {

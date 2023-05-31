@@ -41,6 +41,12 @@ const EmployeeTable = (props) => {
     }));
   };
 
+  //limpiar 
+  const clearModalStates = () => {
+   setSelectedEmployee({});
+   setEditEmployee({});
+ };
+
   //Modal Editar
   const handleShowEditModal = (employee) => {
     setShowEditModal(true);
@@ -50,6 +56,7 @@ const EmployeeTable = (props) => {
   //Cerrar Modal
   const handleCloseEditModal = () => {
     setShowEditModal(false);
+    clearModalStates();
   };
 
   //////////////////////////////////////////////////
@@ -61,6 +68,7 @@ const EmployeeTable = (props) => {
   //Cerrar Modal
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
+    clearModalStates();
   };
 
   //EDITAR
@@ -266,7 +274,7 @@ const EmployeeTable = (props) => {
           <select
             className="form-select"
             onChange={(e) => handleSelectAsset('assetId', parseInt(e.target.value), selectedEmployee.employeeId)}
-            value={selectedAsset.id || -1}
+            value={selectedAsset.assetId || -1}
           >
             <option value={-1} disabled>
               Seleccionar
