@@ -104,7 +104,7 @@ const EmployeeTable = props => {
    };
 
    //EDITAR
-   const handleEditEmployeName = editEmployee => {
+   const handleEditEmployee = editEmployee => {
       console.log(editEmployee);
       setShowEditModal(false);
    };
@@ -166,7 +166,7 @@ const EmployeeTable = props => {
          {showEditModal && (
             <ModalContainer
                onClose={handleCloseEditModal}
-               onSucces={() => handleEditEmployeName(edithEmployee)}
+               onSucces={() => handleEditEmployee(edithEmployee)}
             >
                <div className="row">
                   <div className="col-form-label col-sm-3">
