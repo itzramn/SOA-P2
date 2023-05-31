@@ -15,7 +15,7 @@ const EmployeeTable = (props) => {
 //   const [selectedAssetId, setSelectedAssetId] = useState(0);
 //   const [editReleaseDate, setEditReleaseDate] = useState("");
 //   const [editDeliveryDate, setEditDeliveryDate] = useState("");
-  const [addAsset, setAddAsset] = useState([]);
+  const [addAsset, setAddAsset] = useState({});
 
   //   selectedAssetId, newReleaseDate, newDeliveryDate
 
@@ -24,22 +24,18 @@ const EmployeeTable = (props) => {
   };
 
   const handleAddAssetField = (field, value, employeeId) => {
-   console.log(value)
-   setAddAsset((prevEmployee) => [
+    setAddAsset((prevEmployee) => ({
       ...prevEmployee,
-      {
-        employeeId: employeeId,
-        [field]: value,
-      },
-    ]);
+      employeeId: employeeId,
+      [field]: value,
+    }))
   };
 
   const handleAddAsset = (addAsset) => {
-   console.log(addAsset)
    if (!addAsset.assetId || addAsset.assetId === -1 || !addAsset.releseDate || !addAsset.deliveryDate) {
       return;
     }
-   console.log(addAsset);
+   console.log([addAsset]);
   };
 
   const handleEditEmployeeField = (field, value, employeeId) => {
