@@ -42,8 +42,8 @@ const AssetTable = (props) => {
                 <th className="text-left">{asset.name}</th>
                 <th className="text-left">{asset.description}</th>
                 {asset.status === true ? (
-                  <th className="text-left">Activo</th>
-                ): <th className="text-left">Desactivado</th>}
+                  <th className="text-left">Disponible</th>
+                ): <th className="text-left">Ocupado</th>}
                 <td className="text-left">
                   <button
                     className="btn btn-primary"
