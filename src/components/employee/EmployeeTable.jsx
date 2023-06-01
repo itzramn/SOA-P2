@@ -114,7 +114,7 @@ const EmployeeTable = (props) => {
   const handleDeleteEmploye = async (employeeId) => {
     await deleteEmployee(employeeId);
     fetchEmployees();
-    fetchAssets();
+    fetchAssets(true);
     setShowDeleteModal(false);
   };
 

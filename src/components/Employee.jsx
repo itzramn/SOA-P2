@@ -83,7 +83,7 @@ const Employee = () => {
     console.log(newEmployee);
     await createdEmployees(newEmployee);
     fetchEmployees();
-    fetchAssets();
+    fetchAssets(true);
     setShowModal(false);
     clearModalStates();
   };
