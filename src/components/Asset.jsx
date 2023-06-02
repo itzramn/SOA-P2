@@ -7,22 +7,11 @@ const Asset = () => {
    const [showModal, setShowModal] = useState(false);
    const [assets, setAssets] = useState([]);
    const [newAsset, setNewAsset] = useState({});
-   const [newName, setNewName] = useState('');
-   const [newDescription, setNewDescription] = useState('');
 
-   const handleEditEmployeeName = newName => {
-      setNewName(newName);
-      setNewAsset(prevEmployee => ({
+   const handleEditNewAsset = (field, value) => {
+      setNewAsset((prevEmployee) => ({
          ...prevEmployee,
-         name: newName,
-      }));
-   };
-
-   const handleEditAssetDescription = newDescription => {
-      setNewDescription(newDescription);
-      setNewAsset(prevEmployee => ({
-         ...prevEmployee,
-         description: newDescription,
+         [field]: value,
       }));
    };
 
@@ -30,14 +19,17 @@ const Asset = () => {
       await createAsset(newAsset);
       fetchAssets();
       setShowModal(false);
+      setNewAsset({});
    };
 
    const handleShowModal = () => {
+      setNewAsset({});
       setShowModal(true);
    };
 
    const handleCloseShowModal = () => {
       setShowModal(false);
+      setNewAsset({})
    };
 
    const fetchAssets = async status => {
@@ -88,8 +80,8 @@ const Asset = () => {
                         className="form-control"
                         type="text"
                         placeholder="Escribe un nombre"
-                        value={newName}
-                        onChange={e => handleEditEmployeeName(e.target.value)}
+                        value={newAsset.name}
+                        onChange={e => handleEditNewAsset("name", e.target.value)}
                      />
                   </div>
                </div>
@@ -104,9 +96,9 @@ const Asset = () => {
                         className="form-control"
                         type="text"
                         placeholder="Escribe un nombre"
-                        value={newDescription}
+                        value={newAsset.description}
                         onChange={e =>
-                           handleEditAssetDescription(e.target.value)
+                           handleEditNewAsset("description", e.target.value)
                         }
                      />
                   </div>

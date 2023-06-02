@@ -26,6 +26,7 @@ const EmployeeTable = (props) => {
   const handleShowEditModal = (employee) => {
     setShowEditModal(true);
     setSelectedEmployee(employee);
+    fetchAssets(true);
   };
 
   const handleCloseEditModal = () => {

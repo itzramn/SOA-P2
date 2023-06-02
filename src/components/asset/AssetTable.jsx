@@ -65,7 +65,7 @@ const AssetTable = (props) => {
         >
           <div className="full row align-center justify-center">
             <p className="text-center color-black font-huge weight-bold">
-              ¿Está seguro que desea eliminar al empleado?
+              ¿Está seguro que desea eliminar el activo?
             </p>
           </div>
         </ModalContainer>

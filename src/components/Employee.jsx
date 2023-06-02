@@ -55,6 +55,7 @@ const Employee = () => {
 
   const handleShowModal = () => {
     setShowModal(true);
+    fetchAssets(true);
   };
 
   const handleCloseShowModal = () => {
@@ -65,6 +66,7 @@ const Employee = () => {
   const fetchEmployees = async () => {
     const employees = await getEmployees();
     setEmployees(employees);
+    fetchAssets(true);
   };
 
   const fetchAssets = async (status) => {
