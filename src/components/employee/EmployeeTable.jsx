@@ -3,7 +3,11 @@ import moment from "moment";
 import "../../styles/modal.css";
 import ModalContainer from "./ModalContainer";
 import {editEmployeesField, deleteEmployee} from "../../api/employee.api";
-import {addAssetToEmployee, deleteAssetFromEmployee, releaseAsset} from "../../api/asset.api";
+import {
+  addAssetToEmployee,
+  deleteAssetFromEmployee,
+  releaseAsset,
+} from "../../api/asset.api";
 
 const EmployeeTable = (props) => {
   const {employees = [], assets = [], fetchEmployees, fetchAssets} = props;
@@ -72,9 +76,9 @@ const EmployeeTable = (props) => {
     }));
 
     await addAssetToEmployee([addAsset]);
-    setSelectedAsset((...prevAsset)=>({
+    setSelectedAsset((...prevAsset) => ({
       ...prevAsset,
-      assetId: 0
+      assetId: 0,
     }));
     fetchAssets(true);
     fetchEmployees();
@@ -89,9 +93,9 @@ const EmployeeTable = (props) => {
       ...prevEmployee,
       assets: filteredAssetsIds,
     }));
-    setSelectedAsset((...prevAsset)=>({
+    setSelectedAsset((...prevAsset) => ({
       ...prevAsset,
-      assetId: 0
+      assetId: 0,
     }));
     fetchEmployees();
     fetchAssets(true);
@@ -120,9 +124,27 @@ const EmployeeTable = (props) => {
 
   const handleAssetRelease = async (assetId) => {
     await releaseAsset(assetId);
+
+    setSelectedEmployee((prevEmployee) => {
+      const updatedAssets = prevEmployee.assets.map((asset) => {
+        if (asset.id === assetId) {
+          return {
+            ...asset,
+            releaseDate: moment().format("DD/MM/YYYY"),
+          };
+        }
+        return asset;
+      });
+
+      return {
+        ...prevEmployee,
+        assets: updatedAssets,
+      };
+    });
+
     fetchEmployees();
     fetchAssets(true);
-  }
+  };
 
   return (
     <React.Fragment>
@@ -179,224 +201,227 @@ const EmployeeTable = (props) => {
             handleEditEmployee(selectedEmployee.employeeId, editEmployee)
           }
         >
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>Nombre:</b>
-              </p>
+          <div style={{width: "40rem"}}>
+            <div className="row">
+              <div className="col-form-label col-sm-3">
+                <p>
+                  <b>Nombre:</b>
+                </p>
+              </div>
+              <div className="col-sm-9">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Escribe un nombre"
+                  value={
+                    typeof editEmployee.name === "undefined"
+                      ? selectedEmployee.name
+                      : editEmployee.name
+                  }
+                  onChange={(e) =>
+                    handleEditEmployeeField("name", e.target.value)
+                  }
+                />
+              </div>
             </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Escribe un nombre"
-                value={
-                  typeof editEmployee.name === "undefined"
-                    ? selectedEmployee.name
-                    : editEmployee.name
-                }
-                onChange={(e) =>
-                  handleEditEmployeeField("name", e.target.value)
-                }
-              />
+            <div className="row">
+              <div className="col-form-label col-sm-3">
+                <p>
+                  <b>Apellido:</b>
+                </p>
+              </div>
+              <div className="col-sm-9">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Escribe un nombre"
+                  value={
+                    typeof editEmployee.lastName === "undefined"
+                      ? selectedEmployee.lastName
+                      : editEmployee.lastName
+                  }
+                  onChange={(e) =>
+                    handleEditEmployeeField("lastName", e.target.value)
+                  }
+                />
+              </div>
             </div>
-          </div>
-          <div style={{height: "10px"}}></div>
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>Apellido:</b>
-              </p>
+            <div className="row">
+              <div className="col-form-label col-sm-3">
+                <p>
+                  <b>CURP:</b>
+                </p>
+              </div>
+              <div className="col-sm-9">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Escribe un nombre"
+                  value={
+                    typeof editEmployee.curp === "undefined"
+                      ? selectedEmployee.curp
+                      : editEmployee.curp
+                  }
+                  onChange={(e) =>
+                    handleEditEmployeeField("curp", e.target.value)
+                  }
+                />
+              </div>
             </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Escribe un nombre"
-                value={
-                  typeof editEmployee.lastName === "undefined"
-                    ? selectedEmployee.lastName
-                    : editEmployee.lastName
-                }
-                onChange={(e) =>
-                  handleEditEmployeeField("lastName", e.target.value)
-                }
-              />
+            <div className="row">
+              <div className="col-form-label col-sm-7">
+                <p>
+                  <b>Fecha de nacimiento:</b>
+                </p>
+              </div>
+              <div className="col-sm-5">
+                <input
+                  className="form-control"
+                  type="date"
+                  placeholder="Escribe un nombre"
+                  value={
+                    typeof editEmployee.birthDate === "undefined"
+                      ? moment(selectedEmployee.birthDate).format("YYYY-MM-DD")
+                      : editEmployee.birthDate
+                  }
+                  onChange={(e) =>
+                    handleEditEmployeeField("birthDate", e.target.value)
+                  }
+                />
+              </div>
             </div>
-          </div>
-          {/* <div style={{height: "10px"}}></div> */}
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>CURP:</b>
-              </p>
+            <div className="row">
+              <div className="col-form-label col-sm-3">
+                <p>
+                  <b>Email:</b>
+                </p>
+              </div>
+              <div className="col-sm-9">
+                <input
+                  className="form-control"
+                  type="email"
+                  placeholder="ejemplo@gmail.com"
+                  value={
+                    typeof editEmployee.email === "undefined"
+                      ? selectedEmployee.email
+                      : editEmployee.email
+                  }
+                  onChange={(e) =>
+                    handleEditEmployeeField("email", e.target.value)
+                  }
+                />
+              </div>
             </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Escribe un nombre"
-                value={
-                  typeof editEmployee.curp === "undefined"
-                    ? selectedEmployee.curp
-                    : editEmployee.curp
-                }
-                onChange={(e) =>
-                  handleEditEmployeeField("curp", e.target.value)
-                }
-              />
-            </div>
-          </div>
-          <div style={{height: "10px"}}></div>
-          <div className="row">
-            <div className="col-form-label col-sm-7">
-              <p>
-                <b>Fecha de nacimiento:</b>
-              </p>
-            </div>
-            <div className="col-sm-5">
-              <input
-                className="form-control"
-                type="date"
-                placeholder="Escribe un nombre"
-                value={
-                  typeof editEmployee.birthDate === "undefined"
-                    ? moment(selectedEmployee.birthDate).format("YYYY-MM-DD")
-                    : editEmployee.birthDate
-                }
-                onChange={(e) =>
-                  handleEditEmployeeField("birthDate", e.target.value)
-                }
-              />
-            </div>
-          </div>
-          <div style={{height: "10px"}}></div>
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>Email:</b>
-              </p>
-            </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="email"
-                placeholder="ejemplo@gmail.com"
-                value={
-                  typeof editEmployee.email === "undefined"
-                    ? selectedEmployee.email
-                    : editEmployee.email
-                }
-                onChange={(e) =>
-                  handleEditEmployeeField("email", e.target.value)
-                }
-              />
-            </div>
-          </div>
-          <select
-            className="form-select"
-            onChange={(e) =>
-              handleSelectAsset(
-                "assetId",
-                parseInt(e.target.value),
-                selectedEmployee.employeeId
-              )
-            }
-            value={selectedAsset.assetId || -1}
-          >
-            <option value={-1} disabled>
-              Seleccionar
-            </option>
-            {assets?.map((asset, index) => (
-              <option value={asset.id} key={index}>
-                {asset.name}
+            <select
+              className="form-select"
+              onChange={(e) =>
+                handleSelectAsset(
+                  "assetId",
+                  parseInt(e.target.value),
+                  selectedEmployee.employeeId
+                )
+              }
+              value={selectedAsset.assetId || -1}
+            >
+              <option value={-1} disabled>
+                Seleccionar
               </option>
-            ))}
-          </select>
-          <div style={{height: "10px"}}></div>
-          <div className="row">
-            <div className="col-form-label col">
-              <p>
-                <b>Entrega:</b>
-              </p>
+              {assets?.map((asset, index) => (
+                <option value={asset.id} key={index}>
+                  {asset.name}
+                </option>
+              ))}
+            </select>
+            <div style={{height: "10px"}}></div>
+            <div className="row">
+              <div className="col-form-label col">
+                <p>
+                  <b>Entrega:</b>
+                </p>
+              </div>
+              <div className="col">
+                <input
+                  className="form-control"
+                  type="date"
+                  value={selectedAsset.deliveryDate || ""}
+                  onChange={(e) =>
+                    handleSelectAsset(
+                      "deliveryDate",
+                      e.target.value,
+                      selectedEmployee.employeeId
+                    )
+                  }
+                />
+              </div>
             </div>
-            <div className="col">
-              <input
-                className="form-control"
-                type="date"
-                value={selectedAsset.deliveryDate || ""}
-                onChange={(e) =>
-                  handleSelectAsset(
-                    "deliveryDate",
-                    e.target.value,
-                    selectedEmployee.employeeId
-                  )
-                }
-              />
+            <button
+              className="btn btn-primary"
+              type="button"
+              style={{marginRight: "10px"}}
+              onClick={() => handleAddAsset(selectedAsset)}
+            >
+              Añadir
+            </button>
+            <div className="table-container">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th className="text-left">Activos</th>
+                  <th className="text-left">Asignación</th>
+                  <th className="text-left">Entrega</th>
+                  <th className="text-left">Liberación</th>
+                  <th className="text-left">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedEmployee?.assets?.map((asset) => (
+                  <tr key={asset.id}>
+                    {console.log(asset)}
+                    <th className="text-left">{asset.name}</th>
+                    <th className="text-left">
+                      {moment(asset.assignmentDate).format("DD/MM/YYYY")}
+                    </th>
+                    <th className="text-left">
+                      {moment(asset.deliveryDate).format("DD/MM/YYYY")}
+                    </th>
+                    {!asset.releaseDate ? (
+                      <th className="text-left">
+                        <button
+                          className="btn btn-primary"
+                          type="button"
+                          onClick={() => handleAssetRelease(asset.id)}
+                          style={{marginRight: "10px"}}
+                        >
+                          Liberar
+                        </button>
+                      </th>
+                    ) : (
+                      <th className="text-left">
+                        {moment(asset.releaseDate).format("DD/MM/YYYY")}
+                      </th>
+                    )}
+
+                    <th className="text-left">
+                      <button
+                        className="btn btn-primary"
+                        type="button"
+                        onClick={() =>
+                          handleDeleteAsset(
+                            selectedEmployee.employeeId,
+                            asset.id
+                          )
+                        }
+                        style={{marginRight: "10px"}}
+                      >
+                        Eliminar
+                      </button>
+                    </th>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             </div>
           </div>
-          <button
-            className="btn btn-primary"
-            type="button"
-            style={{marginRight: "10px"}}
-            onClick={() => handleAddAsset(selectedAsset)}
-          >
-            Añadir
-          </button>
-          <table className="table">
-            <thead>
-              <tr>
-                <th className="text-left">Activos</th>
-                <th className="text-left">Asignación</th>
-                <th className="text-left">Entrega</th>
-                <th className="text-left">Liberación</th>
-                <th className="text-left">Eliminar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {selectedEmployee?.assets?.map((asset) => (
-                <tr key={asset.id}>
-                  {console.log(asset)}
-                  <th className="text-left">{asset.name}</th>
-                  <th className="text-left">
-                    {moment(asset.assignmentDate).format("DD/MM/YYYY")}
-                  </th>
-                  <th className="text-left">
-                    {moment(asset.deliveryDate).format("DD/MM/YYYY")}
-                  </th>  
-                  {!asset.releaseDate ?  
-                  <th className="text-left">
-                  <button
-                      className="btn btn-primary"
-                      type="button"
-                      onClick={() =>
-                        handleAssetRelease(asset.id)
-                      }
-                      style={{marginRight: "10px"}}
-                    >
-                      Liberar
-                    </button>
-                </th>
-                  : <th className="text-left">
-                    {moment(asset.releaseDate).format("DD/MM/YYYY")}
-                  </th>}
-                  
-                  <th className="text-left">
-                    <button
-                      className="btn btn-primary"
-                      type="button"
-                      onClick={() =>
-                        handleDeleteAsset(selectedEmployee.employeeId, asset.id)
-                      }
-                      style={{marginRight: "10px"}}
-                    >
-                      Eliminar
-                    </button>
-                  </th>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </ModalContainer>
       )}
 

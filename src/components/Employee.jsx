@@ -13,15 +13,8 @@ const Employee = () => {
   const [selectedAssetId, setSelectedAssetId] = useState(0);
   const [newDeliveryDate, setNewDeliveryDate] = useState("");
 
-  const handleAddAsset = async (
-    selectedAssetId,
-    newDeliveryDate
-  ) => {
-    if (
-      selectedAssetId === -1 ||
-      newDeliveryDate === "" 
-    )
-      return;
+  const handleAddAsset = async (selectedAssetId, newDeliveryDate) => {
+    if (selectedAssetId === -1 || newDeliveryDate === "") return;
     const selectedAsset = assets.find((asset) => asset.id === selectedAssetId);
     setNewEmployee((prevEmployee) => ({
       ...prevEmployee,
@@ -29,7 +22,7 @@ const Employee = () => {
         ...(prevEmployee.assets || []), //verifica si prevEmployee.assetsIds existe y tiene un valor
         {
           id: selectedAssetId,
-          name: selectedAsset? selectedAsset.name : "",
+          name: selectedAsset ? selectedAsset.name : "",
           deliveryDate: moment
             .utc(newDeliveryDate)
             .format("YYYY-MM-DD[T]HH:mm:ss"),
@@ -42,7 +35,7 @@ const Employee = () => {
     const filteredAssetsIds = newEmployee.assets.filter(
       (employeeAsset) => employeeAsset.id !== selectedAssetId
     );
-  
+
     setNewEmployee((prevEmployee) => ({
       ...prevEmployee,
       assets: filteredAssetsIds,
@@ -122,157 +115,167 @@ const Employee = () => {
           onClose={handleCloseShowModal}
           onSucces={() => handleCreateEmployee(newEmployee)}
         >
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>Nombre:</b>
-              </p>
+          <div style={{width: "40rem"}}>
+            <div className="row">
+              <div className="col-form-label col-sm-3">
+                <p>
+                  <b>Nombre:</b>
+                </p>
+              </div>
+              <div className="col-sm-9">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Escribe un nombre"
+                  value={newEmployee.name}
+                  onChange={(e) =>
+                    handleEditNewEmployee("name", e.target.value)
+                  }
+                />
+              </div>
             </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Escribe un nombre"
-                value={newEmployee.name}
-                onChange={(e) => handleEditNewEmployee('name', e.target.value)}
-              />
+            <div className="row">
+              <div className="col-form-label col-sm-3">
+                <p>
+                  <b>Apellido:</b>
+                </p>
+              </div>
+              <div className="col-sm-9">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Escribe un nombre"
+                  value={newEmployee.lastName}
+                  onChange={(e) =>
+                    handleEditNewEmployee("lastName", e.target.value)
+                  }
+                />
+              </div>
             </div>
-          </div>
-          <div style={{height: "10px"}}></div>
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>Apellido:</b>
-              </p>
+            <div className="row">
+              <div className="col-form-label col-sm-3">
+                <p>
+                  <b>CURP:</b>
+                </p>
+              </div>
+              <div className="col-sm-9">
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Escribe un nombre"
+                  value={newEmployee.curp}
+                  onChange={(e) =>
+                    handleEditNewEmployee("curp", e.target.value)
+                  }
+                />
+              </div>
             </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Escribe un nombre"
-                value={newEmployee.lastName}
-                onChange={(e) => handleEditNewEmployee('lastName', e.target.value)}
-              />
+            <div className="row">
+              <div className="col-form-label col-sm-7">
+                <p>
+                  <b>Fecha de nacimiento:</b>
+                </p>
+              </div>
+              <div className="col-sm-5">
+                <input
+                  className="form-control"
+                  type="date"
+                  placeholder="Escribe un nombre"
+                  value={newEmployee.birthDate}
+                  onChange={(e) =>
+                    handleEditNewEmployee("birthDate", e.target.value)
+                  }
+                />
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>CURP:</b>
-              </p>
+            <div className="row">
+              <div className="col-form-label col-sm-3">
+                <p>
+                  <b>Email:</b>
+                </p>
+              </div>
+              <div className="col-sm-9">
+                <input
+                  className="form-control"
+                  type="email"
+                  placeholder="ejemplo@gmail.com"
+                  value={newEmployee.email}
+                  onChange={(e) =>
+                    handleEditNewEmployee("email", e.target.value)
+                  }
+                />
+              </div>
             </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="text"
-                placeholder="Escribe un nombre"
-                value={newEmployee.curp}
-                onChange={(e) => handleEditNewEmployee('curp', e.target.value)}
-              />
-            </div>
-          </div>
-          <div style={{height: "10px"}}></div>
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>Fecha de nacimiento:</b>
-              </p>
-            </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="date"
-                placeholder="Escribe un nombre"
-                value={newEmployee.birthDate}
-                onChange={(e) => handleEditNewEmployee('birthDate', e.target.value)}
-              />
-            </div>
-          </div>
-          <div style={{height: "10px"}}></div>
-          <div className="row">
-            <div className="col-form-label col-sm-3">
-              <p>
-                <b>Email:</b>
-              </p>
-            </div>
-            <div className="col-sm-9">
-              <input
-                className="form-control"
-                type="email"
-                placeholder="ejemplo@gmail.com"
-                value={newEmployee.email}
-                onChange={(e) => handleEditNewEmployee('email',e.target.value)}
-              />
-            </div>
-          </div>
-          <div style={{height: "10px"}}></div>
-          <select
-            className="form-select"
-            onChange={(e) => setSelectedAssetId(parseInt(e.target.value))}
-            value={selectedAssetId || -1 || ""}
-          >
-            <option value={-1} disabled>
-              Seleccionar
-            </option>
-            {assets?.map((asset) => (
-              <option value={asset.id} key={asset.id}>
-                {asset.name}
+            <select
+              className="form-select"
+              onChange={(e) => setSelectedAssetId(parseInt(e.target.value))}
+              value={selectedAssetId || -1 || ""}
+            >
+              <option value={-1} disabled>
+                Seleccionar
               </option>
-            ))}
-          </select>
-          <div style={{height: "10px"}}></div>
-          <div className="row">
-            <div className="col-form-label col">
-              <p>
-                <b>Entrega:</b>
-              </p>
+              {assets?.map((asset) => (
+                <option value={asset.id} key={asset.id}>
+                  {asset.name}
+                </option>
+              ))}
+            </select>
+            <div style={{height: "10px"}}></div>
+            <div className="row">
+              <div className="col-form-label col">
+                <p>
+                  <b>Entrega:</b>
+                </p>
+              </div>
+              <div className="col">
+                <input
+                  className="form-control"
+                  type="date"
+                  value={newDeliveryDate}
+                  onChange={(e) => setNewDeliveryDate(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="col">
-              <input
-                className="form-control"
-                type="date"
-                value={newDeliveryDate}
-                onChange={(e) => setNewDeliveryDate(e.target.value)}
-              />
+            <button
+              className="btn btn-primary"
+              type="button"
+              style={{marginRight: "10px"}}
+              onClick={() => handleAddAsset(selectedAssetId, newDeliveryDate)}
+            >
+              Añadir
+            </button>
+            <div className="table-container">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th className="text-left">Activos</th>
+                    <th className="text-left">Entrega</th>
+                    <th className="text-left">Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {newEmployee?.assets?.map((asset) => (
+                    <tr key={asset.id}>
+                      <th className="text-left">{asset.name}</th>
+                      <th className="text-left">
+                        {moment(asset.deliveryDate).format("DD/MM/YYYY")}
+                      </th>
+                      <th className="text-left">
+                        <button
+                          className="btn btn-primary"
+                          type="button"
+                          onClick={() => handleDeleteAsset(asset.id)}
+                          style={{marginRight: "10px"}}
+                        >
+                          Eliminar
+                        </button>
+                      </th>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-          <button
-            className="btn btn-primary"
-            type="button"
-            style={{marginRight: "10px"}}
-            onClick={() =>
-              handleAddAsset(selectedAssetId, newDeliveryDate)
-            }
-          >
-            Añadir
-          </button>
-          <table className="table">
-            <thead>
-              <tr>
-                <th className="text-left">Activos</th>
-                <th className="text-left">Entrega</th>
-                <th className="text-left">Eliminar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {newEmployee?.assets?.map((asset) => (
-                <tr key={asset.id}>
-                  <th className="text-left">{asset.name}</th>
-                  <th className="text-left">{moment(asset.deliveryDate).format('DD/MM/YYYY')}</th>
-                  <th className="text-left">
-                    <button
-                      className="btn btn-primary"
-                      type="button"
-                      onClick={() => handleDeleteAsset(asset.id)}
-                      style={{marginRight: "10px"}}
-                    >
-                      Eliminar
-                    </button>
-                  </th>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </ModalContainer>
       )}
     </React.Fragment>
