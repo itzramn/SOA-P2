@@ -40,8 +40,6 @@ const Asset = () => {
       fetchAssets();
    }, []);
 
-   // const getAsset = () => {}
-
    return (
       <React.Fragment>
          <div className="container" style={{ marginTop: '2rem' }}>
