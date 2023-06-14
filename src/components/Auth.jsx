@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import "../styles/modal.css";
 import {ValidateEmployee} from "../api/auth.api";
 
 const Auth = () => {
@@ -20,8 +21,9 @@ const Auth = () => {
   };
 
   return (
-    <div className="justify-center">
+    <div className="auth-container">
       <div className="container" style={{width: "30rem"}}>
+        <h3>Inicia sesión</h3>
         <div className="input-form-content row full">
           <div className="column full">
             <label className="form-label">Correo</label>
