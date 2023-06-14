@@ -1,13 +1,9 @@
-import Auth from "./components/Auth";
-// import Employee from "./components/Employee";
-// import Asset from "./components/Asset";
+import Employees from "./pages/Employees";
+import Assets from "./pages/Assets";
 
 const App = () => {
   return (
     <div className="App">
-      <Auth/>
-      {/* <Employee/>
-      <Asset/> */}
     </div>
   );
 }
