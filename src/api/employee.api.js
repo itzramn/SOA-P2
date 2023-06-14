@@ -1,26 +1,6 @@
 import axios from 'axios';
-import parseXml from './../utils.ts';
-import { apiUrl, wcfUrl } from '../apiUrl';
-
-const getSoapResponse = async (soapAction, xmlBody, resultNode) => {
-   const config = {
-      headers: {
-         'Content-Type': 'text/xml; charset=utf-8',
-         SOAPAction: `http://tempuri.org/IService/${soapAction}`,
-      },
-   };
-
-   try {
-      const response = await axios.post(wcfUrl, xmlBody, config);
-
-      const result = parseXml(response.data, resultNode);
-
-      return result;
-   } catch (error) {
-      console.log(error);
-      return [];
-   }
-};
+import { getSoapResponse } from '../utils';
+import { apiUrl } from '../apiUrl';
 
 export const getEmployees = async () => {
    const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
