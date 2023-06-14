@@ -1,39 +1,62 @@
+import React, {useState} from "react";
+import {ValidateEmployee} from "../api/auth.api";
+
 const Auth = () => {
-    return (
-      <div>
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleKeys = (field, value) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      [field]: value,
+    }));
+  };
+
+  const handleAuth = async (user) => {
+    await ValidateEmployee(user);
+    //falta el redireccionameinto
+  };
+
+  return (
+    <div className="justify-center">
+      <div className="container" style={{width: "30rem"}}>
         <div className="input-form-content row full">
           <div className="column full">
-            <label for="exampleFormControlInput1" class="form-label">
-              Correo
-            </label>
+            <label className="form-label">Correo</label>
             <input
               type="email"
-              class="form-control"
-              id="exampleFormControlInput1"
+              className="form-control"
               placeholder="name@example.com"
-              //value={newAsset.description}
-              //onChange={(e) => handleEditNewAsset("description", e.target.value)}
+              value={user.email}
+              onChange={(e) => handleKeys("email", e.target.value)}
             />
           </div>
         </div>
         <div className="input-form-content row full">
           <div className="column full">
-            <label for="inputPassword5" class="form-label">
-              Password
-            </label>
+            <label className="form-label">Password</label>
             <input
               type="password"
-              id="inputPassword5"
-              class="form-control"
+              className="form-control"
               placeholder="Escribe tu contraseña"
               aria-labelledby="passwordHelpBlock"
-              //value={newAsset.description}
-              //onChange={(e) => handleEditNewAsset("description", e.target.value)}
+              value={user.password}
+              onChange={(e) => handleKeys("password", e.target.value)}
             />
           </div>
         </div>
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={() => handleAuth(user)}
+        >
+          Ingresar
+        </button>
       </div>
-    );
-  };
-  
-  export default Auth;
+    </div>
+  );
+};
+
+export default Auth;
