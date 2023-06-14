@@ -39,7 +39,7 @@ export const getEmployees = async () => {
    return employees;
 };
 
-export const createdEmployees = async newEmployee => {
+export const createEmployee = async newEmployee => {
    try {
       const response = await axios.post(`${apiUrl}/Employees`, newEmployee);
       return response.data;
@@ -49,11 +49,11 @@ export const createdEmployees = async newEmployee => {
    }
 };
 
-export const editEmployeesField = async (employeeId, editEmployee) => {
+export const updateEmployee = async (employeeId, employee) => {
    try {
       const response = await axios.patch(
          `${apiUrl}/Employees/${employeeId}`,
-         editEmployee
+         employee
       );
       return response.data;
    } catch (error) {
