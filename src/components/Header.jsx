@@ -9,12 +9,12 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item active">
-              <a className="nav-link">
+              <a className="nav-link" href="empleados">
                 Emplados 
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link">
+              <a className="nav-link" href="activos">
                 Activos
               </a>
             </li>
