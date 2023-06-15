@@ -31,6 +31,7 @@ const Auth = () => {
       <div className="auth-container">
          <div className="container" style={{ width: '30rem' }}>
             <h3>Inicia sesión</h3>
+            <div style={{height: "10px"}}/>
             <div className="input-form-content row full">
                <div className="column full">
                   <label className="form-label">Correo</label>
@@ -43,9 +44,10 @@ const Auth = () => {
                   />
                </div>
             </div>
+            <div style={{height: "10px"}}/>
             <div className="input-form-content row full">
                <div className="column full">
-                  <label className="form-label">Password</label>
+                  <label className="form-label">Contraseña</label>
                   <input
                      type="password"
                      className="form-control"
@@ -56,6 +58,7 @@ const Auth = () => {
                   />
                </div>
             </div>
+            <div style={{height: "10px"}}/>
             <button
                className="btn btn-primary"
                type="button"
