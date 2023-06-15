@@ -3,18 +3,16 @@ import { getSoapResponse } from '../utils';
 import { apiUrl } from '../apiUrl';
 
 export const getEmployees = async () => {
+   const wcfMethod = 'GetEmployees';
+
    const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <GetAllEmployees xmlns="http://tempuri.org/"/>
+    <${wcfMethod} xmlns="http://tempuri.org/"/>
   </soap:Body>
 </soap:Envelope>`;
 
-   const employees = await getSoapResponse(
-      'GetAllEmployees',
-      xmlBodyStr,
-      'GetAllEmployeesResult'
-   );
+   const employees = await getSoapResponse(wcfMethod, xmlBodyStr);
 
    return employees;
 };

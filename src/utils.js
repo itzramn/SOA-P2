@@ -10,7 +10,7 @@ const parseXml = (xml, tagName) => {
    return JSON.parse(data || '');
 };
 
-export const getSoapResponse = async (soapAction, xmlBody, resultNode) => {
+export const getSoapResponse = async (soapAction, xmlBody) => {
    const config = {
       headers: {
          'Content-Type': 'text/xml; charset=utf-8',
@@ -21,7 +21,7 @@ export const getSoapResponse = async (soapAction, xmlBody, resultNode) => {
    try {
       const response = await axios.post(wcfUrl, xmlBody, config);
 
-      const result = parseXml(response.data, resultNode);
+      const result = parseXml(response.data, `${soapAction}Result`);
 
       return result;
    } catch (error) {
