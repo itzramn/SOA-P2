@@ -95,10 +95,19 @@ export const deleteAsset = async assetId => {
 };
 
 export const releaseAsset = async assetId => {
-   try {
-      const response = await axios.patch(`${apiUrl}/Assets/${assetId}/release`);
-      return response.data;
-   } catch (error) {
-      console.log(error);
-   }
+   const wcfMethod = 'ReleaseAsset';
+
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <assetId>${assetId}</assetId>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>
+`;
+
+   const response = await soapResponse(wcfMethod, xmlBodyStr, null);
+
+   return response;
 };

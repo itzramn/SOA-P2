@@ -131,7 +131,7 @@ const EmployeeTable = props => {
             if (asset.id === assetId) {
                return {
                   ...asset,
-                  releaseDate: moment().format('DD/MM/YYYY'),
+                  releaseDate: new Date(),
                };
             }
             return asset;
