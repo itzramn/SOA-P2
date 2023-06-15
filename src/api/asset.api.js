@@ -5,19 +5,33 @@ import { soapResponse } from '../utils';
 export const getAssets = async status => {
    const wcfMethod = 'GetAssets';
 
-   const verifyStatus = () => {
-      return typeof status === 'boolean' ? status : null;
+   const statusExists = () => {
+      return typeof status === 'boolean' ? true : null;
    };
 
-   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+   const buildXmlBody = () => {
+      if (statusExists()) {
+         return `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <${wcfMethod} xmlns="http://tempuri.org/">
-        <status>${verifyStatus()}</status>
+        <status>${status}</status>
     </${wcfMethod}>
   </soap:Body>
 </soap:Envelope>
 `;
+      } else {
+         return `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/"/>
+  </soap:Body>
+</soap:Envelope>
+`;
+      }
+   };
+
+   const xmlBodyStr = buildXmlBody();
 
    const response = await soapResponse(wcfMethod, xmlBodyStr, []);
 
