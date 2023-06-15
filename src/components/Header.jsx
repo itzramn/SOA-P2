@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 const Header = () => {
   return (
-    <div className="container">
+    <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" style={{paddingLeft:"30px"}}>
           Itzdi
