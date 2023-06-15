@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getSoapResponse } from '../utils';
+import { soapResponse } from '../utils';
 import { apiUrl } from '../apiUrl';
 
 export const getEmployees = async () => {
@@ -12,9 +12,9 @@ export const getEmployees = async () => {
   </soap:Body>
 </soap:Envelope>`;
 
-   const employees = await getSoapResponse(wcfMethod, xmlBodyStr);
+   const response = await soapResponse(wcfMethod, xmlBodyStr, []);
 
-   return employees;
+   return response;
 };
 
 export const createEmployee = async newEmployee => {
@@ -41,10 +41,18 @@ export const updateEmployee = async (employeeId, employee) => {
 };
 
 export const deleteEmployee = async employeeId => {
-   try {
-      const response = await axios.delete(`${apiUrl}/Employees/${employeeId}`);
-      return response.data;
-   } catch (error) {
-      console.log(error);
-   }
+   const wcfMethod = 'DeleteEmployee';
+
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <employeeId>${employeeId}</employeeId>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>`;
+
+   const response = await soapResponse(wcfMethod, xmlBodyStr, null);
+
+   return response;
 };
