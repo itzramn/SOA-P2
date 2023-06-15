@@ -15,12 +15,10 @@ const EmployeeTable = props => {
    const [showEditModal, setShowEditModal] = useState(false);
    const [showDeleteModal, setShowDeleteModal] = useState(false);
    const [selectedEmployee, setSelectedEmployee] = useState({});
-   const [editEmployee, setEditEmployee] = useState({});
    const [selectedAsset, setSelectedAsset] = useState({});
 
    const clearModalStates = () => {
       setSelectedEmployee({});
-      setEditEmployee({});
    };
 
    const handleShowEditModal = employee => {
@@ -103,14 +101,14 @@ const EmployeeTable = props => {
    };
 
    const handleEditEmployeeField = (field, value) => {
-      setEditEmployee(prevEmployee => ({
+      setSelectedEmployee(prevEmployee => ({
          ...prevEmployee,
          [field]: value,
       }));
    };
 
-   const handleEditEmployee = async (employeeId, employee) => {
-      await updateEmployee(employeeId, employee);
+   const handleEditEmployee = async employee => {
+      await updateEmployee(employee);
       fetchEmployees();
       setShowEditModal(false);
    };
@@ -198,9 +196,7 @@ const EmployeeTable = props => {
          {showEditModal && (
             <ModalContainer
                onClose={handleCloseEditModal}
-               onSucces={() =>
-                  handleEditEmployee(selectedEmployee.employeeId, editEmployee)
-               }
+               onSucces={() => handleEditEmployee(selectedEmployee)}
             >
                <div style={{ width: '40rem' }}>
                   <div className="row">
@@ -214,11 +210,7 @@ const EmployeeTable = props => {
                            className="form-control"
                            type="text"
                            placeholder="Escribe un nombre"
-                           value={
-                              typeof editEmployee.name === 'undefined'
-                                 ? selectedEmployee.name
-                                 : editEmployee.name
-                           }
+                           value={selectedEmployee.name}
                            onChange={e =>
                               handleEditEmployeeField('name', e.target.value)
                            }
@@ -236,11 +228,7 @@ const EmployeeTable = props => {
                            className="form-control"
                            type="text"
                            placeholder="Escribe un nombre"
-                           value={
-                              typeof editEmployee.lastName === 'undefined'
-                                 ? selectedEmployee.lastName
-                                 : editEmployee.lastName
-                           }
+                           value={selectedEmployee.lastName}
                            onChange={e =>
                               handleEditEmployeeField(
                                  'lastName',
@@ -261,11 +249,7 @@ const EmployeeTable = props => {
                            className="form-control"
                            type="text"
                            placeholder="Escribe un nombre"
-                           value={
-                              typeof editEmployee.curp === 'undefined'
-                                 ? selectedEmployee.curp
-                                 : editEmployee.curp
-                           }
+                           value={selectedEmployee.curp}
                            onChange={e =>
                               handleEditEmployeeField('curp', e.target.value)
                            }
@@ -283,13 +267,9 @@ const EmployeeTable = props => {
                            className="form-control"
                            type="date"
                            placeholder="Escribe un nombre"
-                           value={
-                              typeof editEmployee.birthDate === 'undefined'
-                                 ? moment(selectedEmployee.birthDate).format(
-                                      'YYYY-MM-DD'
-                                   )
-                                 : editEmployee.birthDate
-                           }
+                           value={moment(selectedEmployee.birthDate).format(
+                              'YYYY-MM-DD'
+                           )}
                            onChange={e =>
                               handleEditEmployeeField(
                                  'birthDate',
@@ -310,11 +290,7 @@ const EmployeeTable = props => {
                            className="form-control"
                            type="email"
                            placeholder="ejemplo@gmail.com"
-                           value={
-                              typeof editEmployee.email === 'undefined'
-                                 ? selectedEmployee.email
-                                 : editEmployee.email
-                           }
+                           value={selectedEmployee.email}
                            onChange={e =>
                               handleEditEmployeeField('email', e.target.value)
                            }

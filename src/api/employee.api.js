@@ -27,10 +27,11 @@ export const createEmployee = async newEmployee => {
    }
 };
 
-export const updateEmployee = async (employeeId, employee) => {
+export const updateEmployee = async employee => {
+   console.log(employee);
    try {
-      const response = await axios.patch(
-         `${apiUrl}/Employees/${employeeId}`,
+      const response = await axios.post(
+         `${apiUrl}/Employees/${employee.employeeId}`,
          employee
       );
       return response.data;
