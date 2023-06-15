@@ -9,7 +9,7 @@ const Employee = () => {
    const [showModal, setShowModal] = useState(false);
    const [employees, setEmployees] = useState([]);
    const [assets, setAssets] = useState([]);
-   const [newEmployee, setNewEmployee] = useState({});
+   const [newEmployee, setNewEmployee] = useState({ assets: [] });
    const [selectedAssetId, setSelectedAssetId] = useState(0);
    const [newDeliveryDate, setNewDeliveryDate] = useState('');
 
