@@ -75,7 +75,6 @@ const Employee = () => {
    };
 
    const handleCreateEmployee = async newEmployee => {
-      console.log(newEmployee);
       await createEmployee(newEmployee);
       fetchEmployees();
       fetchAssets(true);

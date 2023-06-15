@@ -67,14 +67,21 @@ export const addAssetToEmployee = async newAsset => {
 };
 
 export const deleteAssetFromEmployee = async (employeeId, assetId) => {
-   try {
-      const response = await axios.delete(
-         `${apiUrl}/Employees/${employeeId}/Assets/${assetId}`
-      );
-      return response.data;
-   } catch (error) {
-      console.log(error);
-   }
+   const wcfMethod = 'RemoveAssetFromEmployee';
+
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <employeeId>${employeeId}</employeeId>
+      <assetId>${assetId}</assetId>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>`;
+
+   const response = await soapResponse(wcfMethod, xmlBodyStr, null);
+
+   return response;
 };
 
 export const deleteAsset = async assetId => {

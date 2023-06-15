@@ -18,27 +18,47 @@ export const getEmployees = async () => {
 };
 
 export const createEmployee = async newEmployee => {
-   try {
-      const response = await axios.post(`${apiUrl}/Employees`, newEmployee);
-      return response.data;
-   } catch (error) {
-      console.log(error);
-      return null;
-   }
+   const wcfMethod = 'CreateEmployee';
+   console.log('stringAssets', newEmployee.assets.toString());
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <name>${newEmployee.name}</name>
+      <lastName>${newEmployee.lastName}</lastName>
+      <curp>${newEmployee.curp}</curp>
+      <birthDate>${newEmployee.birthDate}</birthDate>
+      <email>${newEmployee.email}</email>
+      <assets>${JSON.stringify(newEmployee.assets)}</assets>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>`;
+
+   const response = soapResponse(wcfMethod, xmlBodyStr, null);
+   return response;
 };
 
 export const updateEmployee = async employee => {
    console.log(employee);
-   try {
-      const response = await axios.post(
-         `${apiUrl}/Employees/${employee.employeeId}`,
-         employee
-      );
-      return response.data;
-   } catch (error) {
-      console.log(error);
-      return null;
-   }
+   const wcfMethod = 'UpdateEmployee';
+
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <employeeId>${employee.employeeId}</employeeId>
+      <name>${employee.name}</name>
+      <lastName>${employee.lastName}</lastName>
+      <curp>${employee.curp}</curp>
+      <birthDate>${employee.birthDate}</birthDate>
+      <email>${employee.email}</email>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>`;
+
+   const response = await soapResponse(wcfMethod, xmlBodyStr, null);
+   console.log(response);
+   return response;
 };
 
 export const deleteEmployee = async employeeId => {
