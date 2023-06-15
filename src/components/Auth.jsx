@@ -24,7 +24,6 @@ const Auth = () => {
          return alert('Credenciales incorrectas');
       }
       navigate('empleados');
-      //falta el redireccionameinto
    };
 
    return (
