@@ -1,41 +1,76 @@
-import axios from 'axios';
-import { apiUrl } from '../apiUrl';
+import { soapResponse } from '../utils';
 
 export const getEmployees = async () => {
-   try {
-      const response = await axios.get(`${apiUrl}/Employees`);
-      return response.data;
-   } catch (error) {
-      console.log(error);
-      return [];
-   }
+   const wcfMethod = 'GetEmployees';
+
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/"/>
+  </soap:Body>
+</soap:Envelope>`;
+
+   const response = await soapResponse(wcfMethod, xmlBodyStr, []);
+
+   return response;
 };
 
-export const createdEmployees = async (newEmployee) => {
-   try {
-      const response = await axios.post(`${apiUrl}/Employees`, newEmployee, );
-      return response.data;
-   } catch (error) {
-      console.log(error);
-      return null;
-   }
+export const createEmployee = async newEmployee => {
+   const wcfMethod = 'CreateEmployee';
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <name>${newEmployee.name}</name>
+      <lastName>${newEmployee.lastName}</lastName>
+      <curp>${newEmployee.curp}</curp>
+      <birthDate>${newEmployee.birthDate}</birthDate>
+      <email>${newEmployee.email}</email>
+      <assets>${JSON.stringify(newEmployee.assets)}</assets>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>`;
+
+   const response = soapResponse(wcfMethod, xmlBodyStr, null);
+   return response;
 };
 
-export const editEmployeesField = async (employeeId, editEmployee) => {
-   try {
-      const response = await axios.patch(`${apiUrl}/Employees/${employeeId}`, editEmployee);
-      return response.data;
-   } catch (error) {
-      console.log(error);
-      return null;
-   }
+export const updateEmployee = async employee => {
+   console.log(employee);
+   const wcfMethod = 'UpdateEmployee';
+
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <employeeId>${employee.employeeId}</employeeId>
+      <name>${employee.name}</name>
+      <lastName>${employee.lastName}</lastName>
+      <curp>${employee.curp}</curp>
+      <birthDate>${employee.birthDate}</birthDate>
+      <email>${employee.email}</email>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>`;
+
+   const response = await soapResponse(wcfMethod, xmlBodyStr, null);
+   console.log(response);
+   return response;
 };
 
 export const deleteEmployee = async employeeId => {
-   try {
-      const response = await axios.delete(`${apiUrl}/Employees/${employeeId}`);
-      return response.data;
-   } catch (error) {
-      console.log(error);
-   }
+   const wcfMethod = 'DeleteEmployee';
+
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <employeeId>${employeeId}</employeeId>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>`;
+
+   const response = await soapResponse(wcfMethod, xmlBodyStr, null);
+
+   return response;
 };
