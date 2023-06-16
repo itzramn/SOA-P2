@@ -4,9 +4,11 @@ import EmployeeTable from './employee/EmployeeTable';
 import ModalContainer from './employee/ModalContainer';
 import { getEmployees, createEmployee } from '../api/employee.api';
 import { getAssets } from '../api/asset.api';
+import { SendEmailReminders } from '../api/email.api';
 
 const Employee = () => {
    const [showModal, setShowModal] = useState(false);
+   const [showEmailModal, setShowEmailModal] = useState(false);
    const [employees, setEmployees] = useState([]);
    const [assets, setAssets] = useState([]);
    const [newEmployee, setNewEmployee] = useState({ assets: [] });
@@ -82,6 +84,20 @@ const Employee = () => {
       clearModalStates();
    };
 
+   //EMAIL
+   const handleShowEmailModal = () => {
+      setShowEmailModal(true);
+   };
+
+   const handleCloseDeleteModal = () => {
+      setShowEmailModal(false);
+   };
+
+   const handleSendEmail = async () => {
+      await SendEmailReminders();
+      setShowEmailModal(false);
+   };
+
    useEffect(() => {
       fetchEmployees();
       fetchAssets(true);
@@ -107,7 +123,7 @@ const Employee = () => {
                   <button
                      className="btn btn-primary"
                      type="button"
-                     onClick={handleShowModal}
+                     onClick={handleShowEmailModal}
                   >
                      Enviar recordatorios
                   </button>
@@ -293,6 +309,18 @@ const Employee = () => {
                         </tbody>
                      </table>
                   </div>
+               </div>
+            </ModalContainer>
+         )}
+         {showEmailModal && (
+            <ModalContainer
+               onClose={handleCloseDeleteModal}
+               onSucces={handleSendEmail}
+            >
+               <div className="full row align-center justify-center">
+                  <p className="text-center color-black font-huge weight-bold">
+                     ¿Está seguro que desea enviar los recordatorios?
+                  </p>
                </div>
             </ModalContainer>
          )}

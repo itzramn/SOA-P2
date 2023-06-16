@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { apiUrl } from '../apiUrl';
 import { soapResponse } from '../utils';
 
 export const getAssets = async status => {
