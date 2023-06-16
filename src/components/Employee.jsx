@@ -103,6 +103,15 @@ const Employee = () => {
                      Nuevo
                   </button>
                </div>
+               <div className="col">
+                  <button
+                     className="btn btn-primary"
+                     type="button"
+                     onClick={handleShowModal}
+                  >
+                     Enviar recordatorios
+                  </button>
+               </div>
             </div>
             <EmployeeTable
                employees={employees}

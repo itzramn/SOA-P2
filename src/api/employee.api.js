@@ -1,6 +1,4 @@
-import axios from 'axios';
 import { soapResponse } from '../utils';
-import { apiUrl } from '../apiUrl';
 
 export const getEmployees = async () => {
    const wcfMethod = 'GetEmployees';
@@ -19,7 +17,6 @@ export const getEmployees = async () => {
 
 export const createEmployee = async newEmployee => {
    const wcfMethod = 'CreateEmployee';
-   console.log('stringAssets', newEmployee.assets.toString());
    const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
