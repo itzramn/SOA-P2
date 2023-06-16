@@ -89,7 +89,7 @@ const Employee = () => {
       setShowEmailModal(true);
    };
 
-   const handleCloseDeleteModal = () => {
+   const handleCloseEmailModal = () => {
       setShowEmailModal(false);
    };
 
@@ -314,7 +314,7 @@ const Employee = () => {
          )}
          {showEmailModal && (
             <ModalContainer
-               onClose={handleCloseDeleteModal}
+               onClose={handleCloseEmailModal}
                onSucces={handleSendEmail}
             >
                <div className="full row align-center justify-center">
