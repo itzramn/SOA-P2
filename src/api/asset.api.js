@@ -57,13 +57,22 @@ export const createAsset = async newAsset => {
 };
 
 export const addAssetToEmployee = async newAsset => {
-   try {
-      const response = await axios.post(`${apiUrl}/Employees/Assets`, newAsset);
-      return response.data;
-   } catch (error) {
-      console.log(error);
-      return null;
-   }
+   const wcfMethod = 'AddAssetToEmployee';
+   console.log('Adding Asset', newAsset);
+
+   const xmlBodyStr = `<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <${wcfMethod} xmlns="http://tempuri.org/">
+      <asset>${JSON.stringify(newAsset)}</asset>
+    </${wcfMethod}>
+  </soap:Body>
+</soap:Envelope>
+`;
+
+   const response = await soapResponse(wcfMethod, xmlBodyStr, null);
+
+   return response;
 };
 
 export const deleteAssetFromEmployee = async (employeeId, assetId) => {
